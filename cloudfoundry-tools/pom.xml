@@ -32,5 +32,9 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>cloudfoundry-runtime</artifactId>
+		</dependency>
 	</dependencies>
 </project>

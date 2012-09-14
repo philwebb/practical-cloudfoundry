@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cloudfoundry.practical.demo.local;
+package org.cloudfoundry.practical.demo.cloud;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.cloudfoundry.practical.demo.core.About;
+import org.springframework.stereotype.Component;
 
 /**
- * Configuration when not running in the cloud.
+ * Implementation of {@link About} for the cloud environment.
  * @author Phillip Webb
  */
-@Configuration
-@Profile("default")
-@ComponentScan
-public class LocalConfiguration {
+@Component
+public class CloudAbout implements About {
+
+	@Override
+	public String getAbout() {
+		return "Welcome to practical cloudfoundry.  Looks like we are running in the cloud";
+	}
 
 }

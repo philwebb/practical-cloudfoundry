@@ -19,7 +19,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author pwebb
+ * Core configuration used in both local and cloud environments.
+ * @author Phillip Webb
  */
 @Configuration
 @ComponentScan

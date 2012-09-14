@@ -13,19 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cloudfoundry.practical.demo.local;
-
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+package org.cloudfoundry.practical.demo.core;
 
 /**
- * Configuration when not running in the cloud.
+ * A simple demo interface showing how different implementaions can be injected.
  * @author Phillip Webb
  */
-@Configuration
-@Profile("default")
-@ComponentScan
-public class LocalConfiguration {
+public interface About {
+
+	/**
+	 * @return a simple about message
+	 */
+	String getAbout();
 
 }

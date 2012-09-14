@@ -1,0 +1,12 @@
+Remember to add
+
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>cloudfoundry-runtime</artifactId>
+			<version>0.8.2</version>
+		</dependency>
+
+
+Tomcat embedded needs auto-reconfiguration
+
+

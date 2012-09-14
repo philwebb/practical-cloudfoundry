@@ -20,27 +20,48 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
 import org.cloudfoundry.practical.demo.web.WebConfiguration;
+import org.cloudfoundry.reconfiguration.spring.CloudApplicationContextInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 /**
+ * Programmatic initialization for a Servlet 3.0 environment.
  * @author Phillip Webb
  */
 public class WebApplicationInitializer implements org.springframework.web.WebApplicationInitializer {
 
+	private static final String CONTEXT_INITIALIZER_CLASSES = CloudApplicationContextInitializer.class.getName();
+
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
+		setupCloudFoundryAutoReconfiguration(servletContext);
 		setupRootContext(servletContext);
 		setupWebContext(servletContext);
 	}
 
+	/**
+	 * Enable cloud foundry magic. This is required because when running tomcat as a stand alone application.
+	 * @param servletContext
+	 */
+	private void setupCloudFoundryAutoReconfiguration(ServletContext servletContext) {
+		servletContext.setInitParameter("contextInitializerClasses", CONTEXT_INITIALIZER_CLASSES);
+	}
+
+	/**
+	 * Add support for the {@link RootConfiguration}.
+	 * @param servletContext
+	 */
 	private void setupRootContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(RootConfiguration.class);
 		servletContext.addListener(new ContextLoaderListener(context));
 	}
 
+	/**
+	 * Add a {@link DispatcherServlet} and support for the {@link WebConfiguration}
+	 * @param servletContext
+	 */
 	private void setupWebContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfiguration.class);

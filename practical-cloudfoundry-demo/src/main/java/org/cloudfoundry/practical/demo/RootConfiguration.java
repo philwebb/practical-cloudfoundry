@@ -22,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
+ * Root spring configuration.
  * @author Phillip Webb
  */
 @Configuration

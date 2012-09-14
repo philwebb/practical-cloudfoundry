@@ -53,19 +53,38 @@
 		</plugins>
 	</build>
 	<dependencies>
+		<!-- Compile -->
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>cloudfoundry-tools</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>auto-reconfiguration</artifactId>
+			<type>jar</type>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
+
+		<!-- Provided -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
+		<!-- Runtime -->
 		<dependency>
 			<groupId>org.cloudfoundry</groupId>
 			<artifactId>tomcat-standalone</artifactId>

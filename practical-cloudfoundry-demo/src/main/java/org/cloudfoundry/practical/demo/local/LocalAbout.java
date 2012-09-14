@@ -15,17 +15,18 @@
  */
 package org.cloudfoundry.practical.demo.local;
 
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.cloudfoundry.practical.demo.core.About;
+import org.springframework.stereotype.Component;
 
 /**
- * Configuration when not running in the cloud.
+ * Implementation of {@link About} for the local environment.
  * @author Phillip Webb
  */
-@Configuration
-@Profile("default")
-@ComponentScan
-public class LocalConfiguration {
+@Component
+public class LocalAbout implements About {
+
+	public String getAbout() {
+		return "Welcome to practical cloudfoundry.  Looks like we are running locally";
+	}
 
 }

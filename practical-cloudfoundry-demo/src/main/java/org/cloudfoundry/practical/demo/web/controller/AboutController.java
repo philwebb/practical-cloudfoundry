@@ -15,28 +15,29 @@
  */
 package org.cloudfoundry.practical.demo.web.controller;
 
-import org.cloudfoundry.practical.demo.core.Demo;
+import org.cloudfoundry.practical.demo.core.About;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * Simple controller showing an about information.
  * @author Phillip Webb
  */
 @Controller
 public class AboutController {
 
-	private Demo demo;
+	private About about;
 
 	@RequestMapping("/about")
 	@ResponseBody
 	public String showAboutMessage() {
-		return this.demo.getAbout();
+		return this.about.getAbout();
 	}
 
 	@Autowired
-	public void setDemo(Demo demo) {
-		this.demo = demo;
+	public void setAbout(About demo) {
+		this.about = demo;
 	}
 }

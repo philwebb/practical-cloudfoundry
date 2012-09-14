@@ -23,7 +23,7 @@
 		<repository>
 			<id>repository.springsource.milestone</id>
 			<name>SpringSource Milestone Repository</name>
-			<url>http://repo.springsource.org/milestone</url>
+			<url>http://maven.springframework.org/milestone</url>
 		</repository>
 		<repository>
 			<id>local-maven-repository</id>
@@ -122,6 +122,21 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.10</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cloudfoundry</groupId>
+				<artifactId>auto-reconfiguration</artifactId>
+				<version>0.6.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.cloudfoundry</groupId>
+				<artifactId>cloudfoundry-runtime</artifactId>
+				<version>0.8.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hamcrest</groupId>

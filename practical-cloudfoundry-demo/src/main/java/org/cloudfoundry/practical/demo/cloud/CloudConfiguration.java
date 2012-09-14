@@ -20,7 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 /**
- * @author pwebb
+ * Configuration when running in the cloud.
+ * @author Phillip Webb
  */
 @Configuration
 @Profile("cloud")
