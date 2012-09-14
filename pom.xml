@@ -16,11 +16,33 @@
 	<properties>
 		<java.version>1.5</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<dependency.springframework.version>3.1.2.RELEASE</dependency.springframework.version>
+		<dependency.springframework.version>3.2.0.M2</dependency.springframework.version>
+		<main.basedir>${basedir}</main.basedir>
 	</properties>
+	<repositories>
+		<repository>
+			<id>repository.springsource.milestone</id>
+			<name>SpringSource Milestone Repository</name>
+			<url>http://repo.springsource.org/milestone</url>
+		</repository>
+		<repository>
+			<id>local-maven-repository</id>
+			<url>file://${main.basedir}/local-maven-repository</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.3</version>
+				</plugin>
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
 					<version>2.4.1</version>
@@ -68,6 +90,9 @@
 				<plugin>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>2.2</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -87,7 +112,7 @@
 				<groupId>cglib</groupId>
 				<artifactId>cglib</artifactId>
 				<version>2.2.2</version>
-			</dependency>			
+			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
@@ -136,5 +161,5 @@
 			<artifactId>hamcrest-library</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>	
+	</dependencies>
 </project>

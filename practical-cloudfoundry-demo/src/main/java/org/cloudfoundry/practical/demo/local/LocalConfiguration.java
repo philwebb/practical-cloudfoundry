@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("default")
-@ComponentScan(basePackageClasses = LocalConfiguration.class)
+@ComponentScan
 public class LocalConfiguration {
 
 }

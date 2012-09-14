@@ -9,6 +9,9 @@
 	</parent>
 	<artifactId>practical-cloudfoundry-demo</artifactId>
 	<packaging>war</packaging>
+	<properties>
+		<main.basedir>${basedir}/..</main.basedir>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -27,6 +30,26 @@
 					</additionalConfig>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>package-inside-tomcat7</id>
+						<phase>package</phase>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>${basedir}/src/assembly/tomcat7.xml</descriptor>
+							</descriptors>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>tomcat7</finalName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -42,6 +65,13 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>tomcat-standalone</artifactId>
+			<version>7.0.29</version>
+			<type>tar.gz</type>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 </project>

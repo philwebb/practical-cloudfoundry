@@ -8,6 +8,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>cloudfoundry-tools</artifactId>
+	<properties>
+		<main.basedir>${basedir}/..</main.basedir>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>

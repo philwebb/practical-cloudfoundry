@@ -16,10 +16,12 @@
 package org.cloudfoundry.practical.demo.cloud;
 
 import org.cloudfoundry.practical.demo.core.Demo;
+import org.springframework.stereotype.Component;
 
 /**
  * @author pwebb
  */
+@Component
 public class CloudDemo implements Demo {
 
 	@Override

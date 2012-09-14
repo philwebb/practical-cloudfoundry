@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("cloud")
-@ComponentScan(basePackageClasses = CloudConfiguration.class)
+@ComponentScan
 public class CloudConfiguration {
 
 }
