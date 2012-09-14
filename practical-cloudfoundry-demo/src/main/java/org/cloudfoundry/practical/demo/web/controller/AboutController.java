@@ -13,18 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cloudfoundry.practical.demo.cloud;
+package org.cloudfoundry.practical.demo.web.controller;
 
 import org.cloudfoundry.practical.demo.core.Demo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * @author pwebb
+ * @author Phillip Webb
  */
-public class CloudDemo implements Demo {
+@Controller
+public class AboutController {
 
-	@Override
-	public String getAbout() {
-		return "Welcome to practical cloudfoundry.  Looks like we are running in the cloud";
+	private Demo demo;
+
+	@RequestMapping("/about")
+	@ResponseBody
+	public String showAboutMessage() {
+		return this.demo.getAbout();
 	}
 
+	@Autowired
+	public void setDemo(Demo demo) {
+		this.demo = demo;
+	}
 }

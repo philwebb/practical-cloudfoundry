@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 public class LocalDemo implements Demo {
 
 	public String getAbout() {
-		return "Local";
+		return "Welcome to practical cloudfoundry.  Looks like we are running locally";
 	};
 
 }
