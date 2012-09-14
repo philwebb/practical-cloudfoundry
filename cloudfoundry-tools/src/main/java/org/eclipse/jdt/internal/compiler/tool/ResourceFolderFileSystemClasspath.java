@@ -21,6 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.cloudfoundry.tools.io.File;
+import org.cloudfoundry.tools.io.FilterOn;
+import org.cloudfoundry.tools.io.Folder;
+import org.cloudfoundry.tools.io.Resources;
+import org.cloudfoundry.tools.io.FilterOn.AttributeFilter;
+import org.cloudfoundry.tools.io.compiler.ResourceJavaFileManager;
 import org.eclipse.jdt.core.compiler.CharOperation;
 import org.eclipse.jdt.internal.compiler.batch.FileSystem;
 import org.eclipse.jdt.internal.compiler.batch.FileSystem.ClasspathSectionProblemReporter;
@@ -29,12 +35,6 @@ import org.eclipse.jdt.internal.compiler.classfmt.ClassFormatException;
 import org.eclipse.jdt.internal.compiler.env.NameEnvironmentAnswer;
 import org.springframework.util.StringUtils;
 
-import com.wavemaker.tools.io.File;
-import com.wavemaker.tools.io.FilterOn;
-import com.wavemaker.tools.io.FilterOn.AttributeFilter;
-import com.wavemaker.tools.io.Folder;
-import com.wavemaker.tools.io.Resources;
-import com.wavemaker.tools.io.compiler.ResourceJavaFileManager;
 
 /**
  * Adapter class that exposes {@link wavemaker.tools.io.Folder}s from a {@link ResourceJavaFileManager} as eclipse

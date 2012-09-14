@@ -25,12 +25,12 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 
+import org.cloudfoundry.tools.compiler.WaveMakerJavaCompiler;
+import org.cloudfoundry.tools.io.Folder;
+import org.cloudfoundry.tools.io.compiler.ResourceJavaFileManager;
 import org.eclipse.jdt.core.compiler.CompilationProgress;
 import org.eclipse.jdt.internal.compiler.batch.FileSystem;
 
-import com.wavemaker.tools.compiler.WaveMakerJavaCompiler;
-import com.wavemaker.tools.io.Folder;
-import com.wavemaker.tools.io.compiler.ResourceJavaFileManager;
 
 /**
  * Exposes a variant of the internal eclipse batch compiler for use by the {@link WaveMakerJavaCompiler}. This is an
