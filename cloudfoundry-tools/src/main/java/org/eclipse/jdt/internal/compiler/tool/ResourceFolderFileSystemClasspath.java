@@ -23,144 +23,146 @@ import java.util.Map;
 
 import org.cloudfoundry.tools.io.File;
 import org.cloudfoundry.tools.io.FilterOn;
+import org.cloudfoundry.tools.io.FilterOn.AttributeFilter;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.Resources;
-import org.cloudfoundry.tools.io.FilterOn.AttributeFilter;
 import org.cloudfoundry.tools.io.compiler.ResourceJavaFileManager;
 import org.eclipse.jdt.core.compiler.CharOperation;
-import org.eclipse.jdt.internal.compiler.batch.FileSystem;
+import org.eclipse.jdt.internal.compiler.batch.FileSystem.Classpath;
 import org.eclipse.jdt.internal.compiler.batch.FileSystem.ClasspathSectionProblemReporter;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileReader;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFormatException;
 import org.eclipse.jdt.internal.compiler.env.NameEnvironmentAnswer;
 import org.springframework.util.StringUtils;
 
-
 /**
- * Adapter class that exposes {@link wavemaker.tools.io.Folder}s from a {@link ResourceJavaFileManager} as eclipse
- * {@link FileSystem.Classpath}s.
+ * Adapter class that exposes {@link Folder}s from a {@link ResourceJavaFileManager} as eclipse {@link Classpath}s.
  * 
  * @author Phillip Webb
  */
-public class ResourceFolderFileSystemClasspath implements FileSystem.Classpath {
+public class ResourceFolderFileSystemClasspath implements Classpath {
 
-    private static final AttributeFilter CLASS_OR_JAVA_FILES = FilterOn.names().ending(".class", ".java");
+	private static final AttributeFilter CLASS_OR_JAVA_FILES = FilterOn.names().ending(".class", ".java");
 
-    private static final char FILE_SEPARATOR = java.io.File.separatorChar;
+	private static final char FILE_SEPARATOR = java.io.File.separatorChar;
 
-    private final Folder folder;
+	private final Folder folder;
 
-    private char[] normalizedPath;
+	private char[] normalizedPath;
 
-    private String path;
+	private String path;
 
-    private Map<String, Boolean> isPackageCache;
+	private Map<String, Boolean> isPackageCache;
 
-    public ResourceFolderFileSystemClasspath(Folder folder) {
-        this.folder = folder;
-        this.path = this.folder.toString();
-        this.path = this.path.substring(0, this.path.length() - 1);
-    }
+	public ResourceFolderFileSystemClasspath(Folder folder) {
+		this.folder = folder;
+		this.path = this.folder.toString();
+		this.path = this.path.substring(0, this.path.length() - 1);
+	}
 
-    @Override
-    public void initialize() throws IOException {
-    }
+	@Override
+	public void initialize() throws IOException {
+	}
 
-    @Override
-    public void reset() {
-        this.isPackageCache = null;
-    }
+	@Override
+	public void reset() {
+		this.isPackageCache = null;
+	}
 
-    @Override
-    public char[][][] findTypeNames(String qualifiedPackageName) {
-        if (!isPackage(qualifiedPackageName) || !this.folder.exists()) {
-            return null;
-        }
-        Resources<File> list = this.folder.list().files().include(CLASS_OR_JAVA_FILES);
-        List<char[][]> foundTypeNames = new ArrayList<char[][]>();
-        for (File file : list) {
-            char[][] packageName = CharOperation.splitOn(java.io.File.separatorChar, qualifiedPackageName.toCharArray());
-            String filename = file.getName();
-            int indexOfLastDot = filename.indexOf('.');
-            foundTypeNames.add(CharOperation.arrayConcat(packageName, filename.substring(0, indexOfLastDot).toCharArray()));
-        }
-        return foundTypeNames.toArray(new char[foundTypeNames.size()][][]);
-    }
+	@Override
+	public char[][][] findTypeNames(String qualifiedPackageName) {
+		if (!isPackage(qualifiedPackageName) || !this.folder.exists()) {
+			return null;
+		}
+		Resources<File> list = this.folder.list().files().include(CLASS_OR_JAVA_FILES);
+		List<char[][]> foundTypeNames = new ArrayList<char[][]>();
+		for (File file : list) {
+			char[][] packageName = CharOperation
+					.splitOn(java.io.File.separatorChar, qualifiedPackageName.toCharArray());
+			String filename = file.getName();
+			int indexOfLastDot = filename.indexOf('.');
+			foundTypeNames.add(CharOperation.arrayConcat(packageName, filename.substring(0, indexOfLastDot)
+					.toCharArray()));
+		}
+		return foundTypeNames.toArray(new char[foundTypeNames.size()][][]);
+	}
 
-    @Override
-    public NameEnvironmentAnswer findClass(char[] typeName, String qualifiedPackageName, String qualifiedBinaryFileName) {
-        return findClass(typeName, qualifiedPackageName, qualifiedBinaryFileName, false);
-    }
+	@Override
+	public NameEnvironmentAnswer findClass(char[] typeName, String qualifiedPackageName, String qualifiedBinaryFileName) {
+		return findClass(typeName, qualifiedPackageName, qualifiedBinaryFileName, false);
+	}
 
-    @Override
-    public NameEnvironmentAnswer findClass(char[] typeName, String qualifiedPackageName, String qualifiedBinaryFileName, boolean asBinaryOnly) {
-        if (!isPackage(qualifiedPackageName)) {
-            return null;
-        }
-        String filename = new String(typeName);
-        File file = this.folder.getFile(normalizePath(qualifiedBinaryFileName));
-        if (file.exists()) {
-            InputStream inputStream = file.getContent().asInputStream();
-            try {
-                ClassFileReader reader = ClassFileReader.read(file.getContent().asInputStream(), qualifiedBinaryFileName);
-                String typeSearched = normalizePath(qualifiedPackageName) + "/" + filename;
-                if (!CharOperation.equals(reader.getName(), typeSearched.toCharArray())) {
-                    reader = null;
-                }
-                if (reader != null) {
-                    return new NameEnvironmentAnswer(reader, null);
-                }
-            } catch (ClassFormatException e) {
-            } catch (IOException e) {
-            } finally {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                }
-            }
-        }
-        return null;
-    }
+	@Override
+	public NameEnvironmentAnswer findClass(char[] typeName, String qualifiedPackageName,
+			String qualifiedBinaryFileName, boolean asBinaryOnly) {
+		if (!isPackage(qualifiedPackageName)) {
+			return null;
+		}
+		String filename = new String(typeName);
+		File file = this.folder.getFile(normalizePath(qualifiedBinaryFileName));
+		if (file.exists()) {
+			InputStream inputStream = file.getContent().asInputStream();
+			try {
+				ClassFileReader reader = ClassFileReader.read(file.getContent().asInputStream(),
+						qualifiedBinaryFileName);
+				String typeSearched = normalizePath(qualifiedPackageName) + "/" + filename;
+				if (!CharOperation.equals(reader.getName(), typeSearched.toCharArray())) {
+					reader = null;
+				}
+				if (reader != null) {
+					return new NameEnvironmentAnswer(reader, null);
+				}
+			} catch (ClassFormatException e) {
+			} catch (IOException e) {
+			} finally {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public boolean isPackage(String qualifiedPackageName) {
-        if (this.isPackageCache == null) {
-            this.isPackageCache = new HashMap<String, Boolean>();
-        }
-        Boolean isPackage = this.isPackageCache.get(qualifiedPackageName);
-        if (isPackage == null) {
-            String packagePath = normalizePath(qualifiedPackageName);
-            isPackage = StringUtils.hasLength(packagePath) && this.folder.hasExisting(packagePath);
-            this.isPackageCache.put(qualifiedPackageName, isPackage);
-        }
-        return isPackage;
-    }
+	@Override
+	public boolean isPackage(String qualifiedPackageName) {
+		if (this.isPackageCache == null) {
+			this.isPackageCache = new HashMap<String, Boolean>();
+		}
+		Boolean isPackage = this.isPackageCache.get(qualifiedPackageName);
+		if (isPackage == null) {
+			String packagePath = normalizePath(qualifiedPackageName);
+			isPackage = StringUtils.hasLength(packagePath) && this.folder.hasExisting(packagePath);
+			this.isPackageCache.put(qualifiedPackageName, isPackage);
+		}
+		return isPackage;
+	}
 
-    private String normalizePath(String qualifiedPackageName) {
-        return qualifiedPackageName.replace(FILE_SEPARATOR, '/');
-    }
+	private String normalizePath(String qualifiedPackageName) {
+		return qualifiedPackageName.replace(FILE_SEPARATOR, '/');
+	}
 
-    @Override
-    @SuppressWarnings("rawtypes")
-    public List fetchLinkedJars(ClasspathSectionProblemReporter problemReporter) {
-        return null;
-    }
+	@Override
+	@SuppressWarnings("rawtypes")
+	public List fetchLinkedJars(ClasspathSectionProblemReporter problemReporter) {
+		return null;
+	}
 
-    @Override
-    public char[] normalizedPath() {
-        if (this.normalizedPath == null) {
-            this.normalizedPath = this.path.toCharArray();
-        }
-        return this.normalizedPath;
-    }
+	@Override
+	public char[] normalizedPath() {
+		if (this.normalizedPath == null) {
+			this.normalizedPath = this.path.toCharArray();
+		}
+		return this.normalizedPath;
+	}
 
-    @Override
-    public String getPath() {
-        return this.path;
-    }
+	@Override
+	public String getPath() {
+		return this.path;
+	}
 
-    @Override
-    public String toString() {
-        return "ClasspathDirectory from ResourceFolder " + this.path;
-    }
+	@Override
+	public String toString() {
+		return "ClasspathDirectory from ResourceFolder " + this.path;
+	}
 }

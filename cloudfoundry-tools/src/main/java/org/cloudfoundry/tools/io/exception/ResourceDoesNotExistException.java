@@ -24,13 +24,13 @@ import org.cloudfoundry.tools.io.Resource;
  */
 public class ResourceDoesNotExistException extends ResourceException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public ResourceDoesNotExistException(Folder folder, String missingResourceName) {
-        super("The resource '" + missingResourceName + "' does not exist in the folder '" + folder + "'");
-    }
+	public ResourceDoesNotExistException(Folder folder, String missingResourceName) {
+		super("The resource '" + missingResourceName + "' does not exist in the folder '" + folder + "'");
+	}
 
-    public ResourceDoesNotExistException(Resource resource) {
-        super("The resource '" + resource.toString() + "' does not exist");
-    }
+	public ResourceDoesNotExistException(Resource resource) {
+		super("The resource '" + resource.toString() + "' does not exist");
+	}
 }

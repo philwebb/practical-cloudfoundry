@@ -11,7 +11,6 @@ import org.cloudfoundry.tools.io.exception.ResourceDoesNotExistException;
 import org.cloudfoundry.tools.io.exception.ResourceExistsException;
 import org.springframework.util.Assert;
 
-
 /**
  * A {@link File} that is backed by a {@link FileStore}. Allows developers to use the simpler {@link FileStore}
  * interface to provide a full {@link File} implementation. Subclasses must provide a suitable {@link FileStore}

@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io.zip;
 
 import java.io.BufferedInputStream;
@@ -17,7 +16,6 @@ import org.cloudfoundry.tools.io.store.StoredFolder;
 import org.cloudfoundry.tools.io.zip.ZipResourceStore.ZipFolderStore;
 import org.springframework.util.Assert;
 
-
 /**
  * Adapter class that can be used present a zip file as a {@link Folder}.
  * 
@@ -25,105 +23,108 @@ import org.springframework.util.Assert;
  */
 public class ZipArchive extends StoredFolder {
 
-    private final ZipFolderStore store;
+	private final ZipFolderStore store;
 
-    /**
-     * Create a new {@link ZipArchive} instance from the specified zip file.
-     * 
-     * @param zipFile the zip file
-     */
-    public ZipArchive(File zipFile) {
-        this.store = new ZipFolderStore(zipFile);
-    }
+	/**
+	 * Create a new {@link ZipArchive} instance from the specified zip file.
+	 * 
+	 * @param zipFile the zip file
+	 */
+	public ZipArchive(File zipFile) {
+		this.store = new ZipFolderStore(zipFile);
+	}
 
-    @Override
-    protected FolderStore getStore() {
-        return this.store;
-    }
+	@Override
+	protected FolderStore getStore() {
+		return this.store;
+	}
 
-    /**
-     * Unzip the specified zip file into a folder.
-     * 
-     * @param file the file to unzip (this must reference a zip file)
-     * @param destination the destination folder
-     * @see #unpack(InputStream)
-     */
-    public static void unpack(File file, Folder destination) {
-        Assert.notNull(file, "File must not be null");
-        Assert.notNull(destination, "Destination must not be null");
-        unpack(file.getContent().asInputStream(), destination);
-    }
+	/**
+	 * Unzip the specified zip file into a folder.
+	 * 
+	 * @param file the file to unzip (this must reference a zip file)
+	 * @param destination the destination folder
+	 * @see #unpack(InputStream, Folder)
+	 */
+	public static void unpack(File file, Folder destination) {
+		Assert.notNull(file, "File must not be null");
+		Assert.notNull(destination, "Destination must not be null");
+		unpack(file.getContent().asInputStream(), destination);
+	}
 
-    /**
-     * Unzip the specified input stream into a folder.
-     * 
-     * @param inputStream the input stream to unzip (this must contain zip contents)
-     * @param destination the destination folder
-     * @see #unpack(File)
-     */
-    public static void unpack(InputStream inputStream, Folder destination) {
-        Assert.notNull(inputStream, "InputStream must not be null");
-        Assert.notNull(destination, "Destination must not be null");
-        destination.createIfMissing();
-        ZipInputStream zip = new ZipInputStream(new BufferedInputStream(inputStream));
-        try {
-            InputStream noCloseZip = new NoCloseInputStream(zip);
-            ZipEntry entry = zip.getNextEntry();
-            while (entry != null) {
-                if (entry.isDirectory()) {
-                    destination.getFolder(entry.getName()).createIfMissing();
-                } else {
-                    destination.getFile(entry.getName()).getContent().write(noCloseZip);
-                }
-                entry = zip.getNextEntry();
-            }
-        } catch (IOException e) {
-            throw new ResourceException(e);
-        } finally {
-            try {
-                zip.close();
-            } catch (IOException e) {
-            }
-        }
-    }
+	/**
+	 * Unzip the specified input stream into a folder.
+	 * 
+	 * @param inputStream the input stream to unzip (this must contain zip contents)
+	 * @param destination the destination folder
+	 * @see #unpack(File, Folder)
+	 */
+	public static void unpack(InputStream inputStream, Folder destination) {
+		Assert.notNull(inputStream, "InputStream must not be null");
+		Assert.notNull(destination, "Destination must not be null");
+		destination.createIfMissing();
+		ZipInputStream zip = new ZipInputStream(new BufferedInputStream(inputStream));
+		try {
+			InputStream noCloseZip = new NoCloseInputStream(zip);
+			ZipEntry entry = zip.getNextEntry();
+			while (entry != null) {
+				if (entry.isDirectory()) {
+					destination.getFolder(entry.getName()).createIfMissing();
+				} else {
+					destination.getFile(entry.getName()).getContent().write(noCloseZip);
+				}
+				entry = zip.getNextEntry();
+			}
+		} catch (IOException e) {
+			throw new ResourceException(e);
+		} finally {
+			try {
+				zip.close();
+			} catch (IOException e) {
+			}
+		}
+	}
 
-    /**
-     * Create a {@link InputStream} containing a zip representation of the given folder.
-     * 
-     * @param folder the folder to compress
-     */
-    public static InputStream compress(Folder folder) {
-        return compress(folder, null);
-    }
+	/**
+	 * Create a {@link InputStream} containing a zip representation of the given folder.
+	 * 
+	 * @param folder the folder to compress
+	 * @return the zipped input stream
+	 */
+	public static InputStream compress(Folder folder) {
+		return compress(folder, null);
+	}
 
-    /**
-     * Create a {@link InputStream} containing a zip representation of the given folder.
-     * 
-     * @param folder the folder to compress
-     * @param prefix an optional entry prefix. This allows a entries to be nested within a folder if required
-     */
-    public static InputStream compress(Folder folder, String prefix) {
-        return compress(folder.find(), prefix);
-    }
+	/**
+	 * Create a {@link InputStream} containing a zip representation of the given folder.
+	 * 
+	 * @param folder the folder to compress
+	 * @param prefix an optional entry prefix. This allows a entries to be nested within a folder if required
+	 * @return the zipped input stream
+	 */
+	public static InputStream compress(Folder folder, String prefix) {
+		return compress(folder.find(), prefix);
+	}
 
-    /**
-     * Create a {@link InputStream} containing a zip representation of the given resources.
-     * 
-     * @param resources resources to compress
-     * @param entryPrefix an optional entry prefix. This allows a entries to be nested within a folder if required
-     */
-    public static InputStream compress(Resources<?> resources) {
-        return compress(resources, null);
-    }
+	/**
+	 * Create a {@link InputStream} containing a zip representation of the given resources.
+	 * 
+	 * @param resources resources to compress
+	 * @return the zipped input stream
+	 */
+	public static InputStream compress(Resources<?> resources) {
+		return compress(resources, null);
+	}
 
-    /**
-     * Create a {@link InputStream} containing a zip representation of the given resources.
-     * 
-     * @param resources resources to compress
-     * @param prefix an optional entry prefix. This allows a entries to be nested within a folder if required
-     */
-    public static InputStream compress(Resources<?> resources, String prefix) {
-        return new ZipResourcesStream(resources, prefix);
-    }
+	/**
+	 * Create a {@link InputStream} containing a zip representation of the given resources.
+	 * 
+	 * @param resources resources to compress
+	 * @param prefix an optional entry prefix. This allows a entries to be nested within a folder if required
+	 * @return the zipped input stream
+	 */
+	public static InputStream compress(Resources<?> resources, String prefix) {
+		return new ZipResourcesStream(resources, prefix);
+	}
 
 }

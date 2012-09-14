@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io.store;
 
 import org.cloudfoundry.tools.io.Folder;
@@ -11,10 +10,10 @@ import org.cloudfoundry.tools.io.Folder;
  */
 public interface FolderStore extends ResourceStore {
 
-    /**
-     * List the contents of the folder.
-     * 
-     * @return the folder contents
-     */
-    Iterable<String> list();
+	/**
+	 * List the contents of the folder.
+	 * 
+	 * @return the folder contents
+	 */
+	Iterable<String> list();
 }

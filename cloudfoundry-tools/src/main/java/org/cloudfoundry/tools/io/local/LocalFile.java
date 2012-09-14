@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io.local;
 
 import org.cloudfoundry.tools.io.File;
@@ -15,28 +14,28 @@ import org.cloudfoundry.tools.io.store.StoredFile;
  */
 public class LocalFile extends StoredFile {
 
-    private final LocalFileStore store;
+	private final LocalFileStore store;
 
-    /**
-     * Package scope constructor, files should only be accessed via the {@link LocalFolder},
-     * 
-     * @param store the file store
-     */
-    LocalFile(LocalFileStore store) {
-        this.store = store;
-    }
+	/**
+	 * Package scope constructor, files should only be accessed via the {@link LocalFolder},
+	 * 
+	 * @param store the file store
+	 */
+	LocalFile(LocalFileStore store) {
+		this.store = store;
+	}
 
-    @Override
-    protected FileStore getStore() {
-        return this.store;
-    }
+	@Override
+	protected FileStore getStore() {
+		return this.store;
+	}
 
-    /**
-     * Returns access to the underlying local {@link File}.
-     * 
-     * @return the underlying {@link File}
-     */
-    public java.io.File getLocalFile() {
-        return this.store.getFile();
-    }
+	/**
+	 * Returns access to the underlying local {@link File}.
+	 * 
+	 * @return the underlying {@link File}
+	 */
+	public java.io.File getLocalFile() {
+		return this.store.getFile();
+	}
 }

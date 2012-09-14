@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.cloudfoundry.tools.io.exception.ResourceTypeMismatchException;
 
-
 /**
  * Factory class that can be used to construct a {@link URL} for a given {@link Resource}. The {@link URL}s returned
  * from this class can be used to access file content using the {@link URL#openStream()} method, however, the URL cannot

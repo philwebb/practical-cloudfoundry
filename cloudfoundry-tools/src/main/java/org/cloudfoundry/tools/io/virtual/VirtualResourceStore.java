@@ -21,7 +21,6 @@ import org.cloudfoundry.tools.io.store.ResourceStore;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
-
 /**
  * {@link ResourceStore} for {@link VirtualFolder}s and {@link VirtualFile}s.
  * 

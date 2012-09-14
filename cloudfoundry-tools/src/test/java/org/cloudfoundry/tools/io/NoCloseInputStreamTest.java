@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io;
 
 import static org.mockito.Mockito.mock;
@@ -17,14 +16,14 @@ import org.junit.Test;
  */
 public class NoCloseInputStreamTest {
 
-    @Test
-    public void shouldNotClose() throws Exception {
-        InputStream inputStream = mock(InputStream.class);
-        NoCloseInputStream noCloseInputStream = new NoCloseInputStream(inputStream);
-        noCloseInputStream.read();
-        noCloseInputStream.close();
-        verify(inputStream).read();
-        verify(inputStream, never()).close();
-    }
+	@Test
+	public void shouldNotClose() throws Exception {
+		InputStream inputStream = mock(InputStream.class);
+		NoCloseInputStream noCloseInputStream = new NoCloseInputStream(inputStream);
+		noCloseInputStream.read();
+		noCloseInputStream.close();
+		verify(inputStream).read();
+		verify(inputStream, never()).close();
+	}
 
 }

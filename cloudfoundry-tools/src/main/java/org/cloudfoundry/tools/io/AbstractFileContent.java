@@ -27,7 +27,6 @@ import org.cloudfoundry.tools.io.exception.ResourceException;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 
-
 /**
  * Abstract base class for {@link FileContent}.
  * 

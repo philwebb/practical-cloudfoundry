@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io;
 
 /**
@@ -6,18 +5,18 @@ package org.cloudfoundry.tools.io;
  */
 public class LatestLastModified implements ResourceOperation<File> {
 
-    private long value;
+	private long value;
 
-    @Override
-    public void perform(File resource) {
-        long lastModified = resource.getLastModified();
-        if (lastModified > this.value) {
-            this.value = lastModified;
-        }
-    }
+	@Override
+	public void perform(File resource) {
+		long lastModified = resource.getLastModified();
+		if (lastModified > this.value) {
+			this.value = lastModified;
+		}
+	}
 
-    public long getValue() {
-        return this.value;
-    }
+	public long getValue() {
+		return this.value;
+	}
 
 }

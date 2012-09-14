@@ -21,14 +21,14 @@ package org.cloudfoundry.tools.io.exception;
  */
 public class ResourceExistsException extends ResourceException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    public ResourceExistsException(String message) {
-        super(message);
-    }
+	public ResourceExistsException(String message) {
+		super(message);
+	}
 
-    public ResourceExistsException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public ResourceExistsException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
 }

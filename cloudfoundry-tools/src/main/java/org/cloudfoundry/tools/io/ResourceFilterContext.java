@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io;
 
 /**
@@ -8,11 +7,11 @@ package org.cloudfoundry.tools.io;
  */
 public interface ResourceFilterContext {
 
-    /**
-     * Returns the source folder that triggered the filter. Useful when matching paths.
-     * 
-     * @return the source folder
-     * @see Resources#getSource()
-     */
-    Folder getSource();
+	/**
+	 * Returns the source folder that triggered the filter. Useful when matching paths.
+	 * 
+	 * @return the source folder
+	 * @see Resources#getSource()
+	 */
+	Folder getSource();
 }

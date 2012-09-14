@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io.virtual;
 
 import org.cloudfoundry.tools.io.File;
@@ -7,7 +6,6 @@ import org.cloudfoundry.tools.io.store.FolderStore;
 import org.cloudfoundry.tools.io.store.StoredFolder;
 import org.cloudfoundry.tools.io.virtual.VirtualResourceStore.VirtualFolderStore;
 import org.springframework.util.Assert;
-
 
 /**
  * A virtual {@link Folder} that exists only in memory. Virtual folders provide a convenient method for manipulating
@@ -18,20 +16,20 @@ import org.springframework.util.Assert;
  */
 public class VirtualFolder extends StoredFolder {
 
-    private final VirtualFolderStore store;
+	private final VirtualFolderStore store;
 
-    public VirtualFolder() {
-        this.store = new VirtualFolderStore();
-    }
+	public VirtualFolder() {
+		this.store = new VirtualFolderStore();
+	}
 
-    VirtualFolder(VirtualFolderStore store) {
-        Assert.notNull(store, "Store must not be null");
-        this.store = store;
-    }
+	VirtualFolder(VirtualFolderStore store) {
+		Assert.notNull(store, "Store must not be null");
+		this.store = store;
+	}
 
-    @Override
-    protected FolderStore getStore() {
-        return this.store;
-    }
+	@Override
+	protected FolderStore getStore() {
+		return this.store;
+	}
 
 }

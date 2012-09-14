@@ -31,9 +31,8 @@ import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ObjectUtils;
 
-
 /**
- * {@link ResourceStore}s for {@link ZipFile} and {@link ZipArchive}.
+ * {@link ResourceStore}s for {@link ZipArchive}.
  * 
  * @author Phillip Webb
  */

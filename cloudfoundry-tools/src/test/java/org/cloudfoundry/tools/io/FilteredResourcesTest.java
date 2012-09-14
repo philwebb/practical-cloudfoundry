@@ -1,4 +1,3 @@
-
 package org.cloudfoundry.tools.io;
 
 import static org.hamcrest.Matchers.is;
@@ -26,56 +25,56 @@ import org.mockito.MockitoAnnotations;
  */
 public class FilteredResourcesTest {
 
-    @Mock
-    private Folder source;
+	@Mock
+	private Folder source;
 
-    @Mock
-    private File fileA;
+	@Mock
+	private File fileA;
 
-    @Mock
-    private File fileB;
+	@Mock
+	private File fileB;
 
-    @Mock
-    private File fileC;
+	@Mock
+	private File fileC;
 
-    @Mock
-    private File fileD;
+	@Mock
+	private File fileD;
 
-    private Resources<File> resources;
+	private Resources<File> resources;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        this.resources = new ResourcesCollection<File>(this.source, this.fileA, this.fileB, this.fileC, this.fileD);
-    }
+	@Before
+	public void setup() {
+		MockitoAnnotations.initMocks(this);
+		this.resources = new ResourcesCollection<File>(this.source, this.fileA, this.fileB, this.fileC, this.fileD);
+	}
 
-    @Test
-    public void shoulNotFilterAnyIncluded() throws Exception {
-        Resources<File> actual = FilteredResources.include(this.resources, filterOn(this.fileA), filterOn(this.fileC));
-        assertMatches(actual, this.fileA, this.fileC);
-    }
+	@Test
+	public void shoulNotFilterAnyIncluded() throws Exception {
+		Resources<File> actual = FilteredResources.include(this.resources, filterOn(this.fileA), filterOn(this.fileC));
+		assertMatches(actual, this.fileA, this.fileC);
+	}
 
-    @Test
-    public void shouldFilterEveryExcluded() throws Exception {
-        Resources<File> actual = FilteredResources.exclude(this.resources, filterOn(this.fileA), filterOn(this.fileC));
-        assertMatches(actual, this.fileB, this.fileD);
-    }
+	@Test
+	public void shouldFilterEveryExcluded() throws Exception {
+		Resources<File> actual = FilteredResources.exclude(this.resources, filterOn(this.fileA), filterOn(this.fileC));
+		assertMatches(actual, this.fileB, this.fileD);
+	}
 
-    private void assertMatches(Resources<File> actual, File... expected) {
-        Iterator<File> iterator = actual.iterator();
-        for (File file : expected) {
-            assertThat(iterator.next(), is(file));
-        }
-        assertThat(iterator.hasNext(), is(false));
-    }
+	private void assertMatches(Resources<File> actual, File... expected) {
+		Iterator<File> iterator = actual.iterator();
+		for (File file : expected) {
+			assertThat(iterator.next(), is(file));
+		}
+		assertThat(iterator.hasNext(), is(false));
+	}
 
-    private ResourceFilter filterOn(final Resource on) {
-        return new ResourceFilter() {
+	private ResourceFilter filterOn(final Resource on) {
+		return new ResourceFilter() {
 
-            @Override
-            public boolean match(ResourceFilterContext context, Resource resource) {
-                return resource == on;
-            }
-        };
-    }
+			@Override
+			public boolean match(ResourceFilterContext context, Resource resource) {
+				return resource == on;
+			}
+		};
+	}
 }

@@ -25,7 +25,6 @@ import org.cloudfoundry.tools.io.exception.ResourceExistsException;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.util.Assert;
 
-
 /**
  * Abstract base class for read-only {@link File} implementations that are not contained in any {@link #getParent()
  * parent} {@link Folder}.

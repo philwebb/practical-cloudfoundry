@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.cloudfoundry.tools.io.exception.ResourceDoesNotExistException;
 
-
 /**
  * An {@link Iterable} collections of {@link Resource}s that also support various {@link ResourceOperation operations}.
  * 

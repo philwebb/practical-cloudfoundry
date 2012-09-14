@@ -21,7 +21,6 @@ import java.io.Writer;
 
 import org.cloudfoundry.tools.io.exception.ResourceException;
 
-
 /**
  * Provides access to {@link File} content in a variety of ways.
  * 

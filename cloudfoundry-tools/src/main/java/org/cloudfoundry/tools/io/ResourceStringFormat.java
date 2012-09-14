@@ -21,15 +21,15 @@ package org.cloudfoundry.tools.io;
  */
 public enum ResourceStringFormat {
 
-    /**
-     * The full name of the resource, for example <tt>"/folder/file.txt"</tt> or <tt>"/folder/"</tt>. Note: any jailed
-     * elements of the path are excluded.
-     */
-    FULL,
+	/**
+	 * The full name of the resource, for example <tt>"/folder/file.txt"</tt> or <tt>"/folder/"</tt>. Note: any jailed
+	 * elements of the path are excluded.
+	 */
+	FULL,
 
-    /**
-     * The full unjailed path of the resource, for example <tt>"/jail/folder/file.txt"</tt> or <tt>"/jail/folder/"</tt>.
-     * Note: any jailed elements of the path are excluded.
-     */
-    UNJAILED,
+	/**
+	 * The full unjailed path of the resource, for example <tt>"/jail/folder/file.txt"</tt> or <tt>"/jail/folder/"</tt>.
+	 * Note: any jailed elements of the path are excluded.
+	 */
+	UNJAILED,
 }
