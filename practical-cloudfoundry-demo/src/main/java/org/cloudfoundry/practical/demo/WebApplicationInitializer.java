@@ -27,6 +27,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 /**
  * Programmatic initialization for a Servlet 3.0 environment.
+ * 
  * @author Phillip Webb
  */
 public class WebApplicationInitializer implements org.springframework.web.WebApplicationInitializer {
@@ -65,11 +66,11 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
 	private void setupWebContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfiguration.class);
-		DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
+		DispatcherServlet dispatcherServlet = new ExtendedDispatcherServlet(context);
 		ServletRegistration.Dynamic servletRegistration = servletContext.addServlet("dispatcherServlet",
 				dispatcherServlet);
 		servletRegistration.setLoadOnStartup(1);
-		servletRegistration.addMapping("/");
+		servletRegistration.addMapping("/*");
 	}
 
 }

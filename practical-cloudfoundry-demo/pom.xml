@@ -68,6 +68,18 @@
 			<artifactId>log4j</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>net.sf.webdav-servlet</groupId>
+			<artifactId>webdav-servlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.cloudfoundry</groupId>
 			<artifactId>auto-reconfiguration</artifactId>
 			<type>jar</type>

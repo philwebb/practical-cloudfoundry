@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+	<appender name="CA" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+		</layout>
+		<param name="target" value="System.err" />
+	</appender>
+
+	<logger name="org.springframework" additivity="false">
+		<level value="info" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger name="org.cloudfoundry" additivity="false">
+		<level value="info" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<logger name="net.sf.webdav" additivity="false">
+		<level value="info" />
+		<appender-ref ref="CA" />
+	</logger>
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="CA" />
+	</root>
+
+</log4j:configuration>
+
