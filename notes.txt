@@ -10,3 +10,12 @@ Remember to add
 Tomcat embedded needs auto-reconfiguration
 
 
+How to configure mongo with @Config
+
+
+logging
+
+
+webdav chunked cypherduck
+
+

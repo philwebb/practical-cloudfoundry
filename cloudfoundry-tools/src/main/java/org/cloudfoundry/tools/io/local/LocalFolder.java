@@ -22,6 +22,8 @@ import org.cloudfoundry.tools.io.JailedResourcePath;
 import org.cloudfoundry.tools.io.local.LocalResourceStore.LocalFolderStore;
 import org.cloudfoundry.tools.io.store.FolderStore;
 import org.cloudfoundry.tools.io.store.StoredFolder;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * A {@link Folder} implementation backed by standard {@link File java.io.File}s.
@@ -73,5 +75,14 @@ public class LocalFolder extends StoredFolder {
 	 */
 	public File getLocalFile() {
 		return this.store.getFile();
+	}
+
+	/**
+	 * @return The user home folder
+	 */
+	public static LocalFolder home() {
+		String home = System.getProperty("user.home");
+		Assert.state(StringUtils.hasLength(home), "Unable to locate home folder");
+		return new LocalFolder(home);
 	}
 }

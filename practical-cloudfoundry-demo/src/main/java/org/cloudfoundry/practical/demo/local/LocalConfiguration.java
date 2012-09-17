@@ -15,6 +15,11 @@
  */
 package org.cloudfoundry.practical.demo.local;
 
+import net.sf.webdav.IWebdavStore;
+
+import org.cloudfoundry.practical.demo.web.webdav.FolderWebdavStore;
+import org.cloudfoundry.tools.io.local.LocalFolder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -27,5 +32,10 @@ import org.springframework.context.annotation.Profile;
 @Profile("default")
 @ComponentScan
 public class LocalConfiguration {
+
+	@Bean
+	public IWebdavStore webdavStore() {
+		return new FolderWebdavStore(LocalFolder.home());
+	}
 
 }

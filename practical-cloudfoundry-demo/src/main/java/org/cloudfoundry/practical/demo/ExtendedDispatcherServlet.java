@@ -26,7 +26,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 
 /**
  * Extended version of the {@link DispatcherServlet} that dispatches all requests regardless of type. This is require in
- * order to support webdav.
+ * order to support webdav. Work around for SPR-4799.
  * 
  * @author Phillip Webb
  */

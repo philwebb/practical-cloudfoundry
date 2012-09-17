@@ -15,11 +15,6 @@
  */
 package org.cloudfoundry.practical.demo.web;
 
-import net.sf.webdav.IWebdavStore;
-
-import org.cloudfoundry.practical.demo.web.webdav.FolderWebdavStore;
-import org.cloudfoundry.tools.io.local.LocalFolder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -32,9 +27,4 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @ComponentScan
 public class WebConfiguration {
-
-	@Bean
-	public IWebdavStore webdavStore() {
-		return new FolderWebdavStore(new LocalFolder("/Users/pwebb/tmp"));
-	}
 }

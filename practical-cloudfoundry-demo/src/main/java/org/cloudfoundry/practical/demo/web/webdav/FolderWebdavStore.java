@@ -28,6 +28,7 @@ import org.cloudfoundry.tools.io.File;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.Resource;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 public class FolderWebdavStore implements IWebdavStore {
 
@@ -107,20 +108,30 @@ public class FolderWebdavStore implements IWebdavStore {
 
 	@Override
 	public StoredObject getStoredObject(ITransaction transaction, String uri) {
-		if (!this.root.hasExisting(uri)) {
+		Resource resource = getStoredObjectResource(uri);
+		if (resource == null) {
 			return null;
 		}
-		Resource resource = this.root.getExisting(uri);
 		StoredObject storedObject = new StoredObject();
 		storedObject.setFolder(resource instanceof Folder);
 		storedObject.setCreationDate(NO_DATE);
 		storedObject.setLastModified(NO_DATE);
 		if (resource instanceof File) {
 			File file = (File) resource;
-			storedObject.setLastModified(new Date(file.getLastModified()));
+			storedObject.setLastModified(new Date());
 			storedObject.setCreationDate(new Date(file.getLastModified()));
 			storedObject.setResourceLength(file.getSize());
 		}
 		return storedObject;
+	}
+
+	private Resource getStoredObjectResource(String uri) {
+		if (!StringUtils.hasLength(uri) || uri.equals("/")) {
+			return this.root;
+		}
+		if (this.root.hasExisting(uri)) {
+			return this.root.getExisting(uri);
+		}
+		return null;
 	}
 }

@@ -4,7 +4,7 @@
 
 	<appender name="CA" class="org.apache.log4j.ConsoleAppender">
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
+			<param name="ConversionPattern" value="%-5p [%t]: %m%n" />
 		</layout>
 		<param name="target" value="System.err" />
 	</appender>
@@ -23,6 +23,12 @@
 		<level value="info" />
 		<appender-ref ref="CA" />
 	</logger>
+
+	<logger name="org.cloudfoundry.practical.demo.web" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="CA" />
+	</logger>
+
 
 	<root>
 		<level value="info" />
