@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tl="http://www.thymeleaf.org">
+	<head>
+		<title>Timeouts</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script type="text/javascript" th:src="@{/dojo/dojo.js.uncompressed.js}"/>
+		<script type="text/javascript" th:src="@{/resources/scripts/cloudfoundry-timeout.js}"/>
+	</head>
+	<body>
+		<script type="text/javascript">
+		function ajaxButtonClick(requestUrl) {
+			var deferred = dojo.xhrPost({
+				url : requestUrl,
+				load : function(result) {
+					dojo.byId("text").innerHTML += "\n" + result;
+				},
+				error : function(result,ioargs) {
+					dojo.byId("text").innerHTML += "\nERROR :" + result + " " + ioargs.xhr.status;
+				}
+			});
+
+			deferred.then(
+		        function(result){
+					dojo.byId("text").innerHTML += "\nDeferred Result :" + result;
+		        },
+
+		        function(result){
+					dojo.byId("text").innerHTML += "\nDeferred Error :" + result;
+		        }
+		    );
+
+		}
+		</script>
+	<h1>Timeouts</h1>
+	<div>
+		<input type="button" value="Ajax" onclick="ajaxButtonClick('ajaxrequest')" />
+	</div>
+	<div>
+		<textarea id="text" rows="40" cols="80">Spring MVC</textarea>
+	</div>
+</body>
+</html>

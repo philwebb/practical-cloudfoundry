@@ -15,9 +15,15 @@
  */
 package org.cloudfoundry.practical.demo.web;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.spring3.SpringTemplateEngine;
+import org.thymeleaf.spring3.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 /**
  * Configuration for Spring MVC.
@@ -26,5 +32,38 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @EnableWebMvc
 @ComponentScan
-public class WebConfiguration {
+public class WebConfiguration extends WebMvcConfigurerAdapter {
+
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/dijit/**").addResourceLocations("/dijit/");
+		registry.addResourceHandler("/dojo/**").addResourceLocations("/dojo/");
+		registry.addResourceHandler("/dojox/**").addResourceLocations("/dojox/");
+		// FIXME move this to tools
+		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
+	}
+
+	@Bean
+	public ServletContextTemplateResolver thymleafTemplateResolver() {
+		ServletContextTemplateResolver resolver = new ServletContextTemplateResolver();
+		resolver.setPrefix("/WEB-INF/templates/");
+		resolver.setSuffix(".html");
+		resolver.setTemplateMode("HTML5");
+		return resolver;
+	}
+
+	@Bean
+	public SpringTemplateEngine thymleafTemplateEngine() {
+		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+		templateEngine.setTemplateResolver(thymleafTemplateResolver());
+		return templateEngine;
+	}
+
+	@Bean
+	public ThymeleafViewResolver thymeleafViewResolver() {
+		ThymeleafViewResolver resolver = new ThymeleafViewResolver();
+		resolver.setTemplateEngine(thymleafTemplateEngine());
+		return resolver;
+	}
+
 }
