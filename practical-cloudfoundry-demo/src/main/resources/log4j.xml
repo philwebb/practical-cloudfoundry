@@ -24,6 +24,11 @@
 		<appender-ref ref="CA" />
 	</logger>
 
+	<logger name="org.cloudfoundry.tools" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="CA" />
+	</logger>
+
 	<logger name="org.cloudfoundry.practical.demo.web" additivity="false">
 		<level value="trace" />
 		<appender-ref ref="CA" />

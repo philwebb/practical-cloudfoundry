@@ -6,6 +6,7 @@
 		http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- Local implementation does not have any security -->
 	<beans profile="default">
 		<bean name="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
 			<constructor-arg>
@@ -14,22 +15,18 @@
 		</bean>
 	</beans>
 
+	<!-- Cloud implementation protects Webdav using Cloud Foundry credentials -->
 	<beans profile="cloud">
-		<security:authentication-manager>
-			<security:authentication-provider>
-				<security:user-service>
-					<security:user name="pwebb" password="password"
-						authorities="ROLE_WEBDAV" />
-				</security:user-service>
-			</security:authentication-provider>
-		</security:authentication-manager>
-
 		<security:http>
 			<security:http-basic />
 			<security:logout />
-			<security:intercept-url pattern="/dav/**"
-				access="ROLE_WEBDAV" />
+			<security:intercept-url pattern="/dav/**" access="ROLE_WEBDAV" />
 		</security:http>
+		<bean name="cloudFoundryAuthenticationProvider" class="org.cloudfoundry.tools.security.CloudFoundryAuthenticationProvider">
+			<property name="authorities" value="ROLE_WEBDAV"/>
+		</bean>
+		<security:authentication-manager>
+			<security:authentication-provider ref="cloudFoundryAuthenticationProvider"/>
+		</security:authentication-manager>
 	</beans>
-
 </beans>
