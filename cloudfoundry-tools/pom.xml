@@ -54,6 +54,13 @@
 			<artifactId>spring-core</artifactId>
 		</dependency>
 
+		<!-- Provided -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- Optional -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
