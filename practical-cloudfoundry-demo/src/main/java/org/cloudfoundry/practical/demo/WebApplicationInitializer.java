@@ -15,6 +15,7 @@
  */
 package org.cloudfoundry.practical.demo;
 
+import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
@@ -23,6 +24,7 @@ import org.cloudfoundry.practical.demo.web.WebConfiguration;
 import org.cloudfoundry.reconfiguration.spring.CloudApplicationContextInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.servlet.DispatcherServlet;
 
 /**
@@ -39,6 +41,7 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
 		setupCloudFoundryAutoReconfiguration(servletContext);
 		setupRootContext(servletContext);
 		setupWebContext(servletContext);
+		setupSecurity(servletContext);
 	}
 
 	/**
@@ -66,11 +69,15 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
 	private void setupWebContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfiguration.class);
-		DispatcherServlet dispatcherServlet = new ExtendedDispatcherServlet(context);
-		ServletRegistration.Dynamic servletRegistration = servletContext.addServlet("dispatcherServlet",
-				dispatcherServlet);
-		servletRegistration.setLoadOnStartup(1);
-		servletRegistration.addMapping("/*");
+		DispatcherServlet servlet = new ExtendedDispatcherServlet(context);
+		ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcherServlet", servlet);
+		registration.setLoadOnStartup(1);
+		registration.addMapping("/*");
 	}
 
+	private void setupSecurity(ServletContext servletContext) {
+		FilterRegistration.Dynamic registration = servletContext.addFilter("springSecurityFilterChain",
+				DelegatingFilterProxy.class);
+		registration.addMappingForUrlPatterns(null, false, "/*");
+	}
 }

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.webdav.IWebdavStore;
 import net.sf.webdav.WebDavServletBean;
 
+import org.cloudfoundry.practical.demo.ExtendedDispatcherServlet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -34,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.ServletContextAware;
 
 /**
+ * VMC controller that exposes Webdav functionality by delegating to {@link WebDavServletBean}. NOTE: in order to use
+ * this controller the {@link ExtendedDispatcherServlet} must be used.
+ * 
  * @author Phillip Webb
  */
 @Controller

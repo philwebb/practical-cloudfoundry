@@ -30,6 +30,11 @@ import org.cloudfoundry.tools.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+/**
+ * {@link IWebdavStore} implementation backed by a {@link Folder}.
+ * 
+ * @author Phillip Webb
+ */
 public class FolderWebdavStore implements IWebdavStore {
 
 	private static final Date NO_DATE = new Date(0);

@@ -20,6 +20,7 @@ import org.cloudfoundry.practical.demo.core.CoreConfiguration;
 import org.cloudfoundry.practical.demo.local.LocalConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * Root spring configuration.
@@ -28,6 +29,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @Import({ CoreConfiguration.class, LocalConfiguration.class, CloudConfiguration.class })
+@ImportResource("classpath:spring/security.xml")
 public class RootConfiguration {
 
 }

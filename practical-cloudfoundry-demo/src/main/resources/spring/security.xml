@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<beans profile="default">
+		<bean name="springSecurityFilterChain" class="org.springframework.security.web.FilterChainProxy">
+			<constructor-arg>
+				<list/>
+			</constructor-arg>
+		</bean>
+	</beans>
+
+	<beans profile="cloud">
+		<security:authentication-manager>
+			<security:authentication-provider>
+				<security:user-service>
+					<security:user name="pwebb" password="password"
+						authorities="ROLE_WEBDAV" />
+				</security:user-service>
+			</security:authentication-provider>
+		</security:authentication-manager>
+
+		<security:http>
+			<security:http-basic />
+			<security:logout />
+			<security:intercept-url pattern="/dav/**"
+				access="ROLE_WEBDAV" />
+		</security:http>
+	</beans>
+
+</beans>
