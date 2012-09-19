@@ -50,22 +50,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<overlays>
-						<overlay>
-							<groupId>org.dojotoolkit</groupId>
-							<artifactId>dojo-war</artifactId>
-							<excludes>
-								<exclude>META-INF/**</exclude>
-								<exclude>WEB-INF/**</exclude>
-							</excludes>
-						</overlay>
-					</overlays>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 	<dependencies>
@@ -144,13 +128,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Runtime -->
-		<dependency>
-			<groupId>org.dojotoolkit</groupId>
-			<artifactId>dojo-war</artifactId>
-			<type>war</type>
-			<scope>runtime</scope>
-		</dependency>
+		<!-- Tomcat Runtime -->
 		<dependency>
 			<groupId>org.cloudfoundry</groupId>
 			<artifactId>tomcat-standalone</artifactId>

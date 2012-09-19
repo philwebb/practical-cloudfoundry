@@ -27,8 +27,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.thymeleaf.spring3.SpringTemplateEngine;
@@ -42,14 +40,10 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan
-public class WebConfiguration extends WebMvcConfigurerAdapter {
+public class WebConfiguration {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/dijit/**").addResourceLocations("/dijit/");
-		registry.addResourceHandler("/dojo/**").addResourceLocations("/dojo/");
-		registry.addResourceHandler("/dojox/**").addResourceLocations("/dojox/");
-	}
+	private static final String DOJO_ROOT = "dojo-release-1.8.0";
+	private static final String DOJO_ZIP = "/resources/dojo-release-1.8.0.zip";
 
 	@Bean
 	public ServletContextTemplateResolver thymleafTemplateResolver() {
@@ -75,10 +69,13 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 	}
 
 	@Bean
-	public HandlerMapping cloudfoundryResourceHandlerMapping() {
+	public HandlerMapping resourcesHandlerMapping() {
 		SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
 		Map<String, Object> urlMap = new HashMap<String, Object>();
 		urlMap.put("/cloudfoundry/**", cloudfoundryResourceHandler());
+		urlMap.put("/dojo/**", dojoResourceHandler());
+		urlMap.put("/dojox/**", dojoxResourceHandler());
+		urlMap.put("/dijit/**", dijitResourceHandler());
 		mapping.setUrlMap(urlMap);
 		return mapping;
 	}
@@ -89,5 +86,20 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		Resource location = new ClassPathResource("/cloudfoundry/");
 		handler.setLocations(Collections.singletonList(location));
 		return handler;
+	}
+
+	@Bean
+	public HttpRequestHandler dojoResourceHandler() {
+		return new ZippedServletResourceHandler(DOJO_ZIP, DOJO_ROOT + "/dojo");
+	}
+
+	@Bean
+	public HttpRequestHandler dojoxResourceHandler() {
+		return new ZippedServletResourceHandler(DOJO_ZIP, DOJO_ROOT + "/dojox");
+	}
+
+	@Bean
+	public HttpRequestHandler dijitResourceHandler() {
+		return new ZippedServletResourceHandler(DOJO_ZIP, DOJO_ROOT + "/dijit");
 	}
 }

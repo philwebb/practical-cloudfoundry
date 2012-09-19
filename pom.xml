@@ -157,9 +157,9 @@
 			</dependency>
 			<dependency>
 				<groupId>org.dojotoolkit</groupId>
-				<artifactId>dojo-war</artifactId>
-				<version>1.6.1</version>
-				<type>war</type>
+				<artifactId>dojo-base</artifactId>
+				<version>1.8.0</version>
+				<type>zip</type>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.jdt.core.compiler</groupId>
