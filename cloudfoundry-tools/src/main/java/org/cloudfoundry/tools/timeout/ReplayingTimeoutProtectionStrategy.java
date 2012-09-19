@@ -49,9 +49,11 @@ public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStra
 
 	private long longPollTime = TimeUnit.SECONDS.toMillis(6);
 
-	private long failTimeout = TimeUnit.SECONDS.toMillis(30);
+	private long failTimeout = TimeUnit.SECONDS.toMillis(120);
 
 	private Map<String, MonitorFactory> completedRequests = new HashMap<String, MonitorFactory>();
+
+	private long completedRequestsWaitTime = 500;
 
 	protected final Map<String, MonitorFactory> getCompletedRequests() {
 		return this.completedRequests;
@@ -96,7 +98,7 @@ public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStra
 			synchronized (this.completedRequests) {
 				if (!this.completedRequests.containsKey(uid)) {
 					try {
-						this.completedRequests.wait(this.longPollTime);
+						this.completedRequests.wait(this.completedRequestsWaitTime);
 					} catch (InterruptedException e) {
 					}
 				}
@@ -133,6 +135,14 @@ public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStra
 	 */
 	public void setFailTimeout(long failTimeout) {
 		this.failTimeout = failTimeout;
+	}
+
+	/**
+	 * Sets the amount of time to wait for a completed request.
+	 * @param completedRequestsWaitTime the amount of time to wait for completed requests
+	 */
+	protected final void setCompletedRequestsWaitTime(long completedRequestsWaitTime) {
+		this.completedRequestsWaitTime = completedRequestsWaitTime;
 	}
 
 	/**

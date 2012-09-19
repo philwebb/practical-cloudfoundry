@@ -18,6 +18,10 @@ package org.cloudfoundry.practical.demo;
 import org.cloudfoundry.practical.demo.cloud.CloudConfiguration;
 import org.cloudfoundry.practical.demo.core.CoreConfiguration;
 import org.cloudfoundry.practical.demo.local.LocalConfiguration;
+import org.cloudfoundry.tools.timeout.ReplayingTimeoutProtectionStrategy;
+import org.cloudfoundry.tools.timeout.TimeoutProtectionFilter;
+import org.cloudfoundry.tools.timeout.TimeoutProtectionStrategy;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
@@ -31,5 +35,18 @@ import org.springframework.context.annotation.ImportResource;
 @Import({ CoreConfiguration.class, LocalConfiguration.class, CloudConfiguration.class })
 @ImportResource("classpath:spring/security.xml")
 public class RootConfiguration {
+
+	@Bean
+	public TimeoutProtectionFilter timeoutProtectionFilter() {
+		TimeoutProtectionFilter filter = new TimeoutProtectionFilter();
+		filter.setProtector(timeoutProtectionStrategy());
+		return filter;
+	}
+
+	@Bean
+	public TimeoutProtectionStrategy timeoutProtectionStrategy() {
+		ReplayingTimeoutProtectionStrategy strategy = new ReplayingTimeoutProtectionStrategy();
+		return strategy;
+	}
 
 }

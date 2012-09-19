@@ -34,6 +34,10 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class WebApplicationInitializer implements org.springframework.web.WebApplicationInitializer {
 
+	/**
+	 *
+	 */
+	private static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
 	private static final String CONTEXT_INITIALIZER_CLASSES = CloudApplicationContextInitializer.class.getName();
 
 	@Override
@@ -42,11 +46,12 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
 		setupRootContext(servletContext);
 		setupWebContext(servletContext);
 		setupSecurity(servletContext);
+		setupTimeoutProtection(servletContext);
 	}
 
 	/**
 	 * Enable cloud foundry magic. This is required because when running tomcat as a stand alone application.
-	 * @param servletContext
+	 * @param servletContext the servlet context
 	 */
 	private void setupCloudFoundryAutoReconfiguration(ServletContext servletContext) {
 		servletContext.setInitParameter("contextInitializerClasses", CONTEXT_INITIALIZER_CLASSES);
@@ -54,7 +59,7 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
 
 	/**
 	 * Add support for the {@link RootConfiguration}.
-	 * @param servletContext
+	 * @param servletContext the servlet context
 	 */
 	private void setupRootContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
@@ -64,20 +69,35 @@ public class WebApplicationInitializer implements org.springframework.web.WebApp
 
 	/**
 	 * Add a {@link DispatcherServlet} and support for the {@link WebConfiguration}
-	 * @param servletContext
+	 * @param servletContext the servlet context
 	 */
 	private void setupWebContext(ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.register(WebConfiguration.class);
 		DispatcherServlet servlet = new ExtendedDispatcherServlet(context);
-		ServletRegistration.Dynamic registration = servletContext.addServlet("dispatcherServlet", servlet);
+		ServletRegistration.Dynamic registration = servletContext.addServlet(DISPATCHER_SERVLET_NAME, servlet);
 		registration.setLoadOnStartup(1);
 		registration.addMapping("/*");
 	}
 
+	/**
+	 * Setup Spring Security.
+	 * @param servletContext the servlet context
+	 */
 	private void setupSecurity(ServletContext servletContext) {
 		FilterRegistration.Dynamic registration = servletContext.addFilter("springSecurityFilterChain",
 				DelegatingFilterProxy.class);
 		registration.addMappingForUrlPatterns(null, false, "/*");
 	}
+
+	/**
+	 * Add timeout protection.
+	 * @param servletContext
+	 */
+	private void setupTimeoutProtection(ServletContext servletContext) {
+		FilterRegistration.Dynamic registration = servletContext.addFilter("timeoutProtectionFilter",
+				DelegatingFilterProxy.class);
+		registration.addMappingForServletNames(null, false, DISPATCHER_SERVLET_NAME);
+	}
+
 }

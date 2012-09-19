@@ -2,7 +2,6 @@
 
 (function() {
     "use strict";
-    var TIMEOUT = 1000 * 60;
 
     // Replace XHR methods with long poll aware versions
     dojo.xhrGet = xhrLongPollOnTimeout(dojo.xhrGet);
@@ -14,7 +13,7 @@
     /**
      * Create a new xhr function that switches to long-polling for a response on
      * a gateway timeout.
-     * 
+     *
      * @param originalXhr
      *            the original xhr function
      * @return a xhr function that supports long poll on timeout
@@ -37,23 +36,25 @@
             delete newArgs.error;
             newArgs.handle = handleXhr;
             newArgs.failOk = true;
+            newArgs.timeout = 15000;
 
-            var deferred = new dojo.Deferred(); 
-            
+            var deferred = new dojo.Deferred();
+
             // Call the original DOJO implementation with our new args
             originalXhr(newArgs);
-            
+
             return deferred;
 
             function handleXhr(result, ioargs) {
                 var timeout = null;
-                if (ioargs.xhr.status === 504) {
-                    // Handle 504 gateway timeout by switching to long polling
+                if (result instanceof Error && result.dojoType === "timeout") {
+                    // Handle timeout by switching to long polling
                     // Setup an ultimate timeout, this will be cleared on success
+                	ioargs.xhr.abort();
                     timeout = setTimeout(function() {
                         sendXhrResponse(result, ioargs);
                         timeout = null;
-                    }, TIMEOUT);
+                    }, 120000);
                     // Start long polling for response
                     longPollForResult(timeout);
                 } else {

@@ -15,12 +15,22 @@
  */
 package org.cloudfoundry.practical.demo.web;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -39,8 +49,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		registry.addResourceHandler("/dijit/**").addResourceLocations("/dijit/");
 		registry.addResourceHandler("/dojo/**").addResourceLocations("/dojo/");
 		registry.addResourceHandler("/dojox/**").addResourceLocations("/dojox/");
-		// FIXME move this to tools
-		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
 	@Bean
@@ -66,4 +74,20 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
 		return resolver;
 	}
 
+	@Bean
+	public HandlerMapping cloudfoundryResourceHandlerMapping() {
+		SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
+		Map<String, Object> urlMap = new HashMap<String, Object>();
+		urlMap.put("/cloudfoundry/**", cloudfoundryResourceHandler());
+		mapping.setUrlMap(urlMap);
+		return mapping;
+	}
+
+	@Bean
+	public HttpRequestHandler cloudfoundryResourceHandler() {
+		ResourceHttpRequestHandler handler = new ResourceHttpRequestHandler();
+		Resource location = new ClassPathResource("/cloudfoundry/");
+		handler.setLocations(Collections.singletonList(location));
+		return handler;
+	}
 }
