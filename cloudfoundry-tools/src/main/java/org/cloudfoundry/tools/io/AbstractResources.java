@@ -77,7 +77,8 @@ public abstract class AbstractResources<T extends Resource> implements Resources
 
 	@Override
 	public void delete() {
-		for (T resource : this) {
+		List<T> delete = fetchAll();
+		for (T resource : delete) {
 			resource.delete();
 		}
 	}
