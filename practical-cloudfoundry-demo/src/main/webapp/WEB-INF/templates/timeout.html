@@ -8,9 +8,28 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+
+		dojo.require('dojox.timing');
+
+		var clockcounter = 0;
+		var timer = new dojox.timing.Timer(1000);
+		timer.onTick = function() {
+			clockcounter++;
+			dojo.byId("counter").innerHTML = clockcounter;
+		}
+
 		function ajaxButtonClick(requestUrl) {
+
+			dojo.byId("go").disabled = true;
+			timer.start();
+
 			var deferred = dojo.xhrPost({
 				url : requestUrl,
+				handle : function(result, ioargs) {
+					timer.stop();
+					dojo.byId("counter").innerHTML = "";
+					dojo.byId("go").disabled = false;
+				},
 				load : function(result) {
 					dojo.byId("text").innerHTML += "\nResult : " + result;
 				},
@@ -33,10 +52,12 @@
 		</script>
 	<h1>Timeouts</h1>
 	<div>
-		<input type="button" value="Go" th:onclick="'ajaxButtonClick(\&apos;' + ${ajaxcall} + '\&apos;)'" />
+		<input id="go" type="button" value="Go"
+			th:onclick="'ajaxButtonClick(\&apos;' + ${ajaxcall} + '\&apos;)'"/>
+		<span id="counter"/>
 	</div>
 	<div>
-		<textarea id="text" rows="40" cols="80"/>
+		<textarea id="text" rows="10" cols="80"/>
 	</div>
 </body>
 </html>
