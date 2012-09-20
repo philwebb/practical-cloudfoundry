@@ -18,10 +18,10 @@ package org.cloudfoundry.tools.io;
 /**
  * An operation that can be performed on a {@link Resource} or {@link Resources}.
  * 
+ * @author Phillip Webb
  * @see Resources#performOperation(ResourceOperation)
  * @see Resource#performOperation(ResourceOperation)
  * @param <T> The resource type that the filter works with
- * @author Phillip Webb
  */
 public interface ResourceOperation<T extends Resource> {
 

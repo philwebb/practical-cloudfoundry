@@ -15,6 +15,11 @@
  */
 package org.cloudfoundry.tools.io.exception;
 
+/**
+ * {@link ResourceException} thrown when attempting to modify a read-only resource.
+ * 
+ * @author Phillip Webb
+ */
 public class ReadOnlyResourceException extends ResourceException {
 
 	private static final long serialVersionUID = 1L;

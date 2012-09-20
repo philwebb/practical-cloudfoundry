@@ -22,8 +22,8 @@ import org.cloudfoundry.tools.io.exception.ResourceDoesNotExistException;
 /**
  * An {@link Iterable} collections of {@link Resource}s that also support various {@link ResourceOperation operations}.
  * 
- * @param <T> The resource type
  * @author Phillip Webb
+ * @param <T> The resource type
  */
 public interface Resources<T extends Resource> extends Iterable<T> {
 

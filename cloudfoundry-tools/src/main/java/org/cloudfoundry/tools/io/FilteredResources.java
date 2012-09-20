@@ -22,10 +22,9 @@ import org.springframework.util.Assert;
 /**
  * Implementation of of {@link Resources} that dynamically filters items based on a {@link ResourceFilter}.
  * 
- * @see #include(Resources, ResourceFilter...)
- * 
- * @param <T> The resource type
  * @author Phillip Webb
+ * @param <T> The resource type
+ * @see #include(Resources, ResourceFilter...)
  */
 public class FilteredResources<T extends Resource> extends AbstractResources<T> {
 

@@ -29,10 +29,9 @@ import org.springframework.util.ObjectUtils;
 /**
  * Base for {@link StoredFile} and {@link StoredFolder}.
  * 
+ * @author Phillip Webb
  * @see StoredFile
  * @see StoredFolder
- * 
- * @author Phillip Webb
  */
 public abstract class StoredResource implements Resource {
 

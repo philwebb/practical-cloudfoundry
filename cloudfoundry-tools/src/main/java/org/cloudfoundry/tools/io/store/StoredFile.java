@@ -31,10 +31,9 @@ import org.springframework.util.Assert;
  * interface to provide a full {@link File} implementation. Subclasses must provide a suitable {@link FileStore}
  * implementation via the {@link #getStore()} method.
  * 
+ * @author Phillip Webb
  * @see FileStore
  * @see StoredFolder
- * 
- * @author Phillip Webb
  */
 public abstract class StoredFile extends StoredResource implements File {
 

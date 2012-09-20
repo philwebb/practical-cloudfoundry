@@ -18,11 +18,10 @@ package org.cloudfoundry.tools.io;
 /**
  * A filter used to restrict {@link Resource}s.
  * 
+ * @author Phillip Webb
  * @see FilterOn
  * @see Resources#include(ResourceFilter...)
  * @see Resources#exclude(ResourceFilter...)
- * 
- * @author Phillip Webb
  */
 public interface ResourceFilter {
 

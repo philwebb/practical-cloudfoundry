@@ -28,9 +28,8 @@ import com.mongodb.gridfs.GridFS;
 /**
  * A {@link Folder} implementation backed by a mongo {@link GridFS}.
  * 
- * @see MongoFile
- * 
  * @author Phillip Webb
+ * @see MongoFile
  */
 public class MongoFolder extends StoredFolder {
 

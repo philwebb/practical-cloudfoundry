@@ -24,8 +24,8 @@ import org.springframework.util.Assert;
 /**
  * Implementation of {@link Resources} backed by a {@link Collection}.
  * 
- * @param <T> the resource type
  * @author Phillip Webb
+ * @param <T> the resource type
  */
 public class ResourcesCollection<T extends Resource> extends AbstractResources<T> {
 

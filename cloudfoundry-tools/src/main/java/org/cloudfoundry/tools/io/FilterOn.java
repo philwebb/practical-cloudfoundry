@@ -26,9 +26,8 @@ import org.springframework.util.Assert;
  * {@link Folder}s or {@link Resource}s with matching performed on {@link Resource#getName() names} or
  * {@link Resource#toString() paths}. Builders can be chained together to form compound (AND) matches.
  * 
- * @see ResourceFilter
- * 
  * @author Phillip Webb
+ * @see ResourceFilter
  */
 public abstract class FilterOn {
 

@@ -22,9 +22,8 @@ import org.cloudfoundry.tools.io.exception.ResourceTypeMismatchException;
 /**
  * A folder {@link Resource} that may be stored on a physical disk or using some other mechanism.
  * 
- * @see File
- * 
  * @author Phillip Webb
+ * @see File
  */
 public interface Folder extends Resource, Iterable<Resource> {
 

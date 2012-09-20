@@ -20,8 +20,8 @@ import org.cloudfoundry.tools.io.Folder;
 /**
  * Store for a {@link Folder}.
  * 
- * @see StoredFolder
  * @author Phillip Webb
+ * @see StoredFolder
  */
 public interface FolderStore extends ResourceStore {
 

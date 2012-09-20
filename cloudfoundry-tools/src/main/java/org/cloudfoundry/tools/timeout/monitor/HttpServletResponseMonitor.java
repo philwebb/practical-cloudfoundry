@@ -25,9 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Callback interface used for monitoring a {@link HttpServletResponse}.
  * 
- * @see MonitoredHttpServletResponseWrapper
- * 
  * @author Phillip Webb
+ * @see MonitoredHttpServletResponseWrapper
  */
 public interface HttpServletResponseMonitor {
 

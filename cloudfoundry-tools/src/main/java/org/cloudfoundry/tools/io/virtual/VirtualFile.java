@@ -24,9 +24,8 @@ import org.springframework.util.Assert;
 /**
  * A virtual {@link File} implementation that exists only in memory.
  * 
- * @see VirtualFolder
- * 
  * @author Phillip Webb
+ * @see VirtualFolder
  */
 public class VirtualFile extends StoredFile {
 

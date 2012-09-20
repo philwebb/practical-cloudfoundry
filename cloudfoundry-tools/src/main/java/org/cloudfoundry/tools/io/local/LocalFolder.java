@@ -28,9 +28,8 @@ import org.springframework.util.StringUtils;
 /**
  * A {@link Folder} implementation backed by standard {@link File java.io.File}s.
  * 
- * @see LocalFile
- * 
  * @author Phillip Webb
+ * @see LocalFile
  */
 public class LocalFolder extends StoredFolder {
 

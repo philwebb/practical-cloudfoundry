@@ -18,10 +18,9 @@ package org.cloudfoundry.tools.timeout.monitor;
 /**
  * Factory used to create {@link HttpServletResponseMonitor}s.
  * 
+ * @author Phillip Webb
  * @see HttpServletResponseMonitor
  * @see MonitoredHttpServletResponseWrapper
- * 
- * @author Phillip Webb
  */
 public interface HttpServletResponseMonitorFactory {
 

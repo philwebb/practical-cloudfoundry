@@ -17,6 +17,8 @@ package org.cloudfoundry.tools.io;
 
 /**
  * {@link ResourceOperation} to get the latest last modified value.
+ * 
+ * @author Phillip Webb
  */
 public class LatestLastModified implements ResourceOperation<File> {
 

@@ -32,7 +32,9 @@ import org.cloudfoundry.tools.io.zip.ZipResourceStore.ZipFolderStore;
 import org.springframework.util.Assert;
 
 /**
- * Adapter class that can be used present a zip file as a {@link Folder}.
+ * Adapter class that can be used present a zip file as a {@link Folder}. This class can also be used to
+ * {@link #unpack(File, Folder) unpack} zip files into an existing folder and {@link #compress(Resources) compress}
+ * resources into a zip archive.
  * 
  * @author Phillip Webb
  */

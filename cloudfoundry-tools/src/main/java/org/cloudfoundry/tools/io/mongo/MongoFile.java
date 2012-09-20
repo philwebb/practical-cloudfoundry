@@ -25,9 +25,8 @@ import com.mongodb.gridfs.GridFS;
 /**
  * A {@link File} implementation backed by a mongo {@link GridFS}.
  * 
- * @see MongoFolder
- * 
  * @author Phillip Webb
+ * @see MongoFolder
  */
 public class MongoFile extends StoredFile {
 

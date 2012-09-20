@@ -22,11 +22,10 @@ import org.cloudfoundry.tools.io.exception.ResourceExistsException;
  * Base abstract for {@link File}s and {@link Folder}s that may be stored on a physical disk or using some other
  * mechanism. Subclasses will either implement {@link File} or {@link Folder} (but never both).
  * 
+ * @author Phillip Webb
  * @see File
  * @see Folder
  * @see ResourceURL
- * 
- * @author Phillip Webb
  */
 public interface Resource {
 

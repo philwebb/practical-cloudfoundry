@@ -23,10 +23,9 @@ import org.cloudfoundry.tools.io.Resource;
 /**
  * Base interface for {@link FileStore} and {@link FolderStore}.
  * 
+ * @author Phillip Webb
  * @see FileStore
  * @see FolderStore
- * 
- * @author Phillip Webb
  */
 public interface ResourceStore {
 

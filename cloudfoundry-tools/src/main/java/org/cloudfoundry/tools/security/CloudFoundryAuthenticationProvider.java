@@ -37,7 +37,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.util.StringUtils;
 
 /**
- * {@link AuthenticationProvider} that authenticated using the active cloud foundry users credentials.
+ * Spring Security {@link AuthenticationProvider} that authenticated using the active cloud foundry users credentials.
  * 
  * @author Phillip Webb
  */

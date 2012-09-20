@@ -23,9 +23,8 @@ import org.cloudfoundry.tools.io.store.StoredFile;
 /**
  * A {@link File} implementation backed by standard {@link File java.io.File}s.
  * 
- * @see LocalFolder
- * 
  * @author Phillip Webb
+ * @see LocalFolder
  */
 public class LocalFile extends StoredFile {
 

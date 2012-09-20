@@ -21,8 +21,8 @@ import org.cloudfoundry.tools.io.exception.ResourceExistsException;
 /**
  * A file {@link Resource} that may be stored on a physical disk or using some other mechanism.
  * 
- * @see Folder
  * @author Phillip Webb
+ * @see Folder
  */
 public interface File extends Resource {
 

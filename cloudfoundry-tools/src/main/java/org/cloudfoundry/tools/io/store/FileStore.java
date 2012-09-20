@@ -23,9 +23,8 @@ import org.cloudfoundry.tools.io.File;
 /**
  * Store for a single {@link File}.
  * 
- * @see StoredFile
- * 
  * @author Phillip Webb
+ * @see StoredFile
  */
 public interface FileStore extends ResourceStore {
 
