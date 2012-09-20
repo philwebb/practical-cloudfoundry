@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -36,7 +37,6 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import org.apache.commons.io.output.WriterOutputStream;
-import org.cloudfoundry.tools.compiler.CloudFoundryJavaCompiler;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.ResourceURL;
 import org.cloudfoundry.tools.io.compiler.ResourceJavaFileManager;
@@ -49,16 +49,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
+ * MVC Controller to demonstrate compiling.
+ * 
  * @author Phillip Webb
  */
 @Controller
 @RequestMapping("/compiler")
 public class CompilerController {
 
-	private static ThreadLocalCopyOutputStream threadOut;
+	private static ThreadOverrideOutputStream outOverride;
+	private static ThreadOverrideOutputStream errOverride;
 	static {
-		threadOut = new ThreadLocalCopyOutputStream(System.out);
-		System.setOut(new PrintStream(threadOut));
+		// Replace System.out and System.err with a version we can override on a per-thread basis
+		outOverride = new ThreadOverrideOutputStream(System.out);
+		System.setOut(new PrintStream(outOverride));
+		errOverride = new ThreadOverrideOutputStream(System.err);
+		System.setErr(new PrintStream(errOverride));
 	}
 
 	private static final List<String> COMPILER_OPTIONS = Collections.unmodifiableList(Arrays
@@ -66,8 +72,7 @@ public class CompilerController {
 
 	private Folder folder;
 
-	// FIXME inject?
-	private JavaCompiler compiler = new CloudFoundryJavaCompiler();
+	private JavaCompiler compiler;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public void compiler() {
@@ -92,22 +97,33 @@ public class CompilerController {
 		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, folders.getOutput());
 		Iterable<? extends JavaFileObject> units = fileManager.list(StandardLocation.SOURCE_PATH, "",
 				EnumSet.of(Kind.SOURCE), true);
-		CompilationTask task = this.compiler.getTask(null, fileManager, null, COMPILER_OPTIONS, null, units);
+		CompilationTask task = this.compiler.getTask(out, fileManager, null, COMPILER_OPTIONS, null, units);
 		return task.call();
 	}
 
-	private void run(Folders folders, Writer out) throws Exception {
-		threadOut.setThreadOutputStream(new WriterOutputStream(out));
+	private void run(final Folders folders, final Writer out) throws Exception {
+		runWithOutputOverride(new WriterOutputStream(out), new Callable<Object>() {
+			@Override
+			public Object call() throws Exception {
+				URL url = ResourceURL.get(folders.getOutput(), true);
+				URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { url });
+				Class<?> main = Class.forName("Main", true, classLoader);
+				Method method = main.getDeclaredMethod("main", String[].class);
+				method.invoke(null, new Object[] { new String[] {} });
+				return null;
+			}
+		});
+	}
+
+	private <T> T runWithOutputOverride(OutputStream outputStream, Callable<T> callable) throws Exception {
+		outOverride.setOutputStream(outputStream);
+		errOverride.setOutputStream(outputStream);
 		try {
-			URL url = ResourceURL.get(folders.getOutput(), true);
-			URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { url });
-			Class<?> main = Class.forName("Main", true, classLoader);
-			Method method = main.getDeclaredMethod("main", String[].class);
-			method.invoke(null, new Object[] { new String[] {} });
+			return callable.call();
 		} finally {
-			threadOut.setThreadOutputStream(null);
+			outOverride.setOutputStream(null);
+			errOverride.setOutputStream(null);
 		}
-		System.out.println("done");
 	}
 
 	@Autowired
@@ -115,6 +131,14 @@ public class CompilerController {
 		this.folder = folder;
 	}
 
+	@Autowired
+	public void setCompiler(JavaCompiler compiler) {
+		this.compiler = compiler;
+	}
+
+	/**
+	 * Folders used during compile and run.
+	 */
 	private static class Folders {
 
 		private Folder source = new VirtualFolder();
@@ -124,22 +148,23 @@ public class CompilerController {
 			return this.source;
 		}
 
-		/**
-		 * @return the output
-		 */
 		public Folder getOutput() {
 			return this.output;
 		}
 	}
 
-	private static class ThreadLocalCopyOutputStream extends OutputStream {
+	/**
+	 * Output stream that can optionally redirect to a thread local copy. Used to provide {@link System#out} and
+	 * {@link System#err} capture.
+	 */
+	private static class ThreadOverrideOutputStream extends OutputStream {
 
 		private static ThreadLocal<OutputStream> threadOutputStream = new ThreadLocal<OutputStream>();
 
-		private OutputStream parent;
+		private OutputStream defaultOutputStream;
 
-		public ThreadLocalCopyOutputStream(OutputStream parent) {
-			this.parent = parent;
+		public ThreadOverrideOutputStream(OutputStream defaultOutputStream) {
+			this.defaultOutputStream = defaultOutputStream;
 		}
 
 		@Override
@@ -164,13 +189,12 @@ public class CompilerController {
 
 		private OutputStream getOutputStream() {
 			OutputStream outputStream = threadOutputStream.get();
-			return outputStream == null ? this.parent : outputStream;
+			return outputStream == null ? this.defaultOutputStream : outputStream;
 		}
 
-		public void setThreadOutputStream(OutputStream outputStream) throws IOException {
+		public void setOutputStream(OutputStream outputStream) throws IOException {
 			getOutputStream().flush();
 			threadOutputStream.set(outputStream);
 		}
 	}
-
 }

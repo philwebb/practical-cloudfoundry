@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Implementation of {@link About} for the cloud environment.
+ * 
  * @author Phillip Webb
  */
 @Component

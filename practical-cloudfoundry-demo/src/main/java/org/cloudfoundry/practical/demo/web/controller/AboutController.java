@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Simple controller showing an about information.
+ * MVC controller showing an about information.
+ * 
  * @author Phillip Webb
  */
 @Controller

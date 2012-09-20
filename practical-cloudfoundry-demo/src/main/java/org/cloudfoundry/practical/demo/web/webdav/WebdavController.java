@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.ServletContextAware;
 
 /**
- * VMC controller that exposes Webdav functionality by delegating to {@link WebDavServletBean}. NOTE: in order to use
+ * MVC controller that exposes Webdav functionality by delegating to {@link WebDavServletBean}. NOTE: in order to use
  * this controller the {@link ExtendedDispatcherServlet} must be used.
  * 
  * @author Phillip Webb

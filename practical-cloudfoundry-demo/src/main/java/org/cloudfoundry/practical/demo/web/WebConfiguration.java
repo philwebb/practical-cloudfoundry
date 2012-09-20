@@ -35,6 +35,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 /**
  * Configuration for Spring MVC.
+ * 
  * @author Phillip Webb
  */
 @Configuration

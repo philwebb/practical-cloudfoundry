@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
+ * MVC Controller to demonstrate timeouts.
+ * 
  * @author Phillip Webb
  */
 @Controller

@@ -15,7 +15,10 @@
  */
 package org.cloudfoundry.practical.demo.cloud;
 
+import javax.tools.JavaCompiler;
+
 import org.cloudfoundry.runtime.service.document.CloudMongoDbFactoryBean;
+import org.cloudfoundry.tools.compiler.CloudFoundryJavaCompiler;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.mongo.MongoFolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 
 /**
  * Configuration when running in the cloud.
+ * 
  * @author Phillip Webb
  */
 @Configuration
@@ -45,5 +49,10 @@ public class CloudConfiguration {
 	@Bean
 	public Folder folder() {
 		return new MongoFolder(this.mongo.getDb());
+	}
+
+	@Bean
+	public JavaCompiler javaCompiler() {
+		return new CloudFoundryJavaCompiler();
 	}
 }

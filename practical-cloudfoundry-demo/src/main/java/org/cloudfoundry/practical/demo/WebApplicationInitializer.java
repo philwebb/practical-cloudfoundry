@@ -34,9 +34,8 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class WebApplicationInitializer implements org.springframework.web.WebApplicationInitializer {
 
-	/**
-	 *
-	 */
+	// FIXME replace with web.xml
+
 	private static final String DISPATCHER_SERVLET_NAME = "dispatcherServlet";
 	private static final String CONTEXT_INITIALIZER_CLASSES = CloudApplicationContextInitializer.class.getName();
 

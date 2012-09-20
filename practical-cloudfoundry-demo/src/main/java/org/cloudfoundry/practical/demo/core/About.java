@@ -16,7 +16,8 @@
 package org.cloudfoundry.practical.demo.core;
 
 /**
- * A simple demo interface showing how different implementaions can be injected.
+ * A simple demo interface showing how different implementations can be injected.
+ * 
  * @author Phillip Webb
  */
 public interface About {

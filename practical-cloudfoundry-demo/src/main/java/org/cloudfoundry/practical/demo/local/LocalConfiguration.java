@@ -15,6 +15,9 @@
  */
 package org.cloudfoundry.practical.demo.local;
 
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
+
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.local.LocalFolder;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +27,7 @@ import org.springframework.context.annotation.Profile;
 
 /**
  * Configuration when not running in the cloud.
+ * 
  * @author Phillip Webb
  */
 @Configuration
@@ -38,4 +42,8 @@ public class LocalConfiguration {
 		return folder;
 	}
 
+	@Bean
+	JavaCompiler javaCompiler() {
+		return ToolProvider.getSystemJavaCompiler();
+	}
 }

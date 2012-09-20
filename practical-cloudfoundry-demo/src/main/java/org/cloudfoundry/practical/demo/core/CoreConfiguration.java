@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Core configuration used in both local and cloud environments.
+ * 
  * @author Phillip Webb
  */
 @Configuration
