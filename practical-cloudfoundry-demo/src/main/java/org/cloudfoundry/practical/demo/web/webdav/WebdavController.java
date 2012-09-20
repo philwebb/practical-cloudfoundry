@@ -28,6 +28,7 @@ import net.sf.webdav.IWebdavStore;
 import net.sf.webdav.WebDavServletBean;
 
 import org.cloudfoundry.practical.demo.ExtendedDispatcherServlet;
+import org.cloudfoundry.tools.io.Folder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -82,8 +83,8 @@ public class WebdavController implements ServletContextAware {
 	}
 
 	@Autowired
-	public void setStore(IWebdavStore store) {
-		this.store = store;
+	public void setFolder(Folder rootFolder) {
+		this.store = new FolderWebdavStore(rootFolder);
 	}
 
 	@Override

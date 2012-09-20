@@ -8,52 +8,48 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+			dojo.require('dojox.timing');
 
-		dojo.require('dojox.timing');
+			var clockcounter = 0;
+			var timer = new dojox.timing.Timer(1000);
+			timer.onTick = function() {
+				clockcounter++;
+				dojo.byId("counter").innerHTML = clockcounter;
+			}
 
-		var clockcounter = 0;
-		var timer = new dojox.timing.Timer(1000);
-		timer.onTick = function() {
-			clockcounter++;
-			dojo.byId("counter").innerHTML = clockcounter;
-		}
+			function ajaxButtonClick(requestUrl) {
 
-		function ajaxButtonClick(requestUrl) {
+				dojo.byId("go").disabled = true;
+				timer.start();
 
-			dojo.byId("go").disabled = true;
-			timer.start();
+				var deferred = dojo.xhrPost({
+					url : requestUrl,
+					handle : function(result, ioargs) {
+						timer.stop();
+						dojo.byId("counter").innerHTML = "";
+						dojo.byId("go").disabled = false;
+					},
+					load : function(result) {
+						dojo.byId("text").innerHTML += "\nResult : " + result;
+					},
+					error : function(result,ioargs) {
+						dojo.byId("text").innerHTML += "\nError : " + result + " " + ioargs.xhr.status;
+					}
+				});
 
-			var deferred = dojo.xhrPost({
-				url : requestUrl,
-				handle : function(result, ioargs) {
-					timer.stop();
-					dojo.byId("counter").innerHTML = "";
-					dojo.byId("go").disabled = false;
-				},
-				load : function(result) {
-					dojo.byId("text").innerHTML += "\nResult : " + result;
-				},
-				error : function(result,ioargs) {
-					dojo.byId("text").innerHTML += "\nError : " + result + " " + ioargs.xhr.status;
-				}
-			});
-
-			deferred.then(
-		        function(result){
-					dojo.byId("text").innerHTML += "\nDeferred Result : " + result;
-		        },
-
-		        function(result){
-					dojo.byId("text").innerHTML += "\nDeferred Error : " + result;
-		        }
-		    );
-
-		}
+				deferred.then(
+			        function(result){
+						dojo.byId("text").innerHTML += "\nDeferred Result : " + result;
+			        },
+			        function(result){
+						dojo.byId("text").innerHTML += "\nDeferred Error : " + result;
+			        }
+			    );
+			}
 		</script>
 	<h1>Timeouts</h1>
 	<div>
-		<input id="go" type="button" value="Go"
-			th:onclick="'ajaxButtonClick(\&apos;' + ${ajaxcall} + '\&apos;)'"/>
+		<input id="go" type="button" value="Go" th:onclick="'ajaxButtonClick(\&apos;' + ${ajaxcall} + '\&apos;)'"/>
 		<span id="counter"/>
 	</div>
 	<div>

@@ -236,7 +236,7 @@ public class ResourceJavaFileManager extends ForwardingJavaFileManager<JavaFileM
 		return this.locations.get(location.getName());
 	}
 
-	public void setLocation(Location location, Iterable<? extends Resource> resources) {
+	public void setLocation(Location location, Resource... resources) {
 		Assert.notNull(location, "Location must not be null");
 
 		List<Resource> resourceList = new ArrayList<Resource>();
@@ -244,7 +244,7 @@ public class ResourceJavaFileManager extends ForwardingJavaFileManager<JavaFileM
 
 		for (Resource resource : resources) {
 			resourceList.add(resource);
-			folderList.add(asFolder(resource).jail());
+			folderList.add(asFolder(resource, location.isOutputLocation()).jail());
 		}
 		if (location.isOutputLocation()) {
 			Assert.isTrue(resourceList.size() <= 1, "Output location '" + location + "' can only have one path");
@@ -257,10 +257,11 @@ public class ResourceJavaFileManager extends ForwardingJavaFileManager<JavaFileM
 		return this.locationFolders.get(location.getName());
 	}
 
-	private Folder asFolder(Resource resource) {
+	private Folder asFolder(Resource resource, boolean outputLocation) {
 		if (resource instanceof Folder) {
 			return (Folder) resource;
 		}
+		Assert.isTrue(!outputLocation, "Files can only be used for input locations");
 		File file = (File) resource;
 		Assert.isTrue(file.getName().endsWith(".jar") || file.getName().endsWith(".zip"), file
 				+ " does not have a jar or zip extension");

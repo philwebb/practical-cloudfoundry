@@ -15,10 +15,8 @@
  */
 package org.cloudfoundry.practical.demo.cloud;
 
-import net.sf.webdav.IWebdavStore;
-
-import org.cloudfoundry.practical.demo.web.webdav.FolderWebdavStore;
 import org.cloudfoundry.runtime.service.document.CloudMongoDbFactoryBean;
+import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.mongo.MongoFolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +43,7 @@ public class CloudConfiguration {
 	}
 
 	@Bean
-	public IWebdavStore webdavStore() {
-		return new FolderWebdavStore(new MongoFolder(this.mongo.getDb()));
+	public Folder folder() {
+		return new MongoFolder(this.mongo.getDb());
 	}
 }

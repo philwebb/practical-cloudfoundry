@@ -49,9 +49,9 @@ public class ResourceJavaFileManagerTest {
 		CloudFoundryJavaCompiler compiler = new CloudFoundryJavaCompiler();
 		StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(null, null, null);
 		ResourceJavaFileManager fileManager = new ResourceJavaFileManager(standardFileManager);
-		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, Collections.singleton(classOutputFolder));
-		fileManager.setLocation(StandardLocation.SOURCE_PATH, Collections.singleton(sourceFolder));
-		fileManager.setLocation(StandardLocation.CLASS_PATH, Collections.singleton(exampleJar));
+		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, classOutputFolder);
+		fileManager.setLocation(StandardLocation.SOURCE_PATH, sourceFolder);
+		fileManager.setLocation(StandardLocation.CLASS_PATH, exampleJar);
 
 		Iterable<? extends JavaFileObject> compilationUnits = fileManager.list(StandardLocation.SOURCE_PATH, "",
 				Collections.singleton(JavaFileObject.Kind.SOURCE), true);
@@ -59,6 +59,30 @@ public class ResourceJavaFileManagerTest {
 				compilationUnits);
 		assertThat(task.call(), is(true));
 		assertThat(classOutputFolder.getFile("org/test/Example.class").exists(), is(true));
+	}
+
+	@Test
+	public void shouldCompile2() throws Exception {
+		VirtualFolder classOutputFolder = new VirtualFolder();
+		VirtualFolder sourceFolder = new VirtualFolder();
+
+		sourceFolder
+				.getFile("CompileMe.java")
+				.getContent()
+				.write("public class CompileMe { public static void main(String... args) {System.out.println(\"Hello Cloudfoundry World\");}}");
+
+		CloudFoundryJavaCompiler compiler = new CloudFoundryJavaCompiler();
+		StandardJavaFileManager standardFileManager = compiler.getStandardFileManager(null, null, null);
+		ResourceJavaFileManager fileManager = new ResourceJavaFileManager(standardFileManager);
+		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, classOutputFolder);
+		fileManager.setLocation(StandardLocation.SOURCE_PATH, sourceFolder);
+
+		Iterable<? extends JavaFileObject> compilationUnits = fileManager.list(StandardLocation.SOURCE_PATH, "",
+				Collections.singleton(JavaFileObject.Kind.SOURCE), true);
+		CompilationTask task = compiler.getTask(null, fileManager, null, standardCompilerOptions(), null,
+				compilationUnits);
+		assertThat(task.call(), is(true));
+		assertThat(classOutputFolder.getFile("CompileMe.class").exists(), is(true));
 	}
 
 	private Iterable<String> standardCompilerOptions() {

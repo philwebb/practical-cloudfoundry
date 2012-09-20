@@ -127,6 +127,9 @@ public abstract class ResourceURL {
 		@Override
 		protected URLConnection openConnection(URL url) throws IOException {
 			String path = url.getPath();
+			if ("/".equals(path)) {
+				throw new IOException("Unable to open root folder");
+			}
 			try {
 				File file = this.root.getFile(path);
 				if (!file.exists()) {
