@@ -138,7 +138,6 @@ public class MonitoredHttpServletResponseWrapper extends HttpServletResponseWrap
 	}
 
 	@Override
-	@SuppressWarnings("deprecation")
 	public void setStatus(int sc, String sm) {
 		super.setStatus(sc, sm);
 		getMonitor().setStatus(sc, sm);

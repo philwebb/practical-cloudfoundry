@@ -64,6 +64,10 @@
 			<artifactId>cglib</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
@@ -124,7 +128,7 @@
 		<!-- Provided -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 
