@@ -16,8 +16,8 @@
 package org.cloudfoundry.practical.demo.local;
 
 import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
-import org.cloudfoundry.tools.compiler.CloudFoundryJavaCompiler;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.local.LocalFolder;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +44,6 @@ public class LocalConfiguration {
 
 	@Bean
 	JavaCompiler javaCompiler() {
-		return new CloudFoundryJavaCompiler();
-		// FIXME return ToolProvider.getSystemJavaCompiler();
+		return ToolProvider.getSystemJavaCompiler();
 	}
 }
