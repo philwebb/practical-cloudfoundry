@@ -18,18 +18,27 @@ package org.cloudfoundry.tools.env;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.cloudfoundry.runtime.env.ApplicationInstanceInfo;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.util.StringUtils;
 
 /**
- * Provided access to cloud foundry environment information.
+ * Provided access to cloud foundry environment information. This version extends
+ * {@link org.cloudfoundry.runtime.env.CloudEnvironment}, providing additional methods as well as handy
+ * {@link #current() static} access.
  * 
  * @author Phillip Webb
  */
 public class CloudEnvironment extends org.cloudfoundry.runtime.env.CloudEnvironment {
 
-	// FIXME test
+	private static final String CLOUD_CONTROLLER_VARIABLE_NAME = "cloudcontroller";
+
+	private static final String DEFAULT_CONTROLLER_URL = "https://api.cloudfoundry.com";
+
+	private static final Pattern CONTROLLER_PATTERN = Pattern.compile("^(https?://).*?\\.(.*$)");
 
 	private static CloudEnvironment environment;
 
@@ -59,12 +68,31 @@ public class CloudEnvironment extends org.cloudfoundry.runtime.env.CloudEnvironm
 	}
 
 	/**
-	 * Returns the controller URL.
+	 * Returns the controller URL. This method will construct the URL based on the application URL. If the url cannot be
+	 * determined set a {@code cloudcontroller} environment variable.
 	 * @return the controller URL.
 	 */
 	public String getControllerUrl() {
-		// FIXME work this out
-		return "https://api.cloudfoundry.com";
+		String controllerUrl = getValue(CLOUD_CONTROLLER_VARIABLE_NAME);
+		if (StringUtils.hasLength(controllerUrl)) {
+			return controllerUrl;
+		}
+
+		ApplicationInstanceInfo instanceInfo = getInstanceInfo();
+		List<String> uris = instanceInfo == null ? null : instanceInfo.getUris();
+		if (uris == null || uris.isEmpty()) {
+			return DEFAULT_CONTROLLER_URL;
+		}
+		String uri = uris.get(0).toLowerCase();
+		if (uri.endsWith("cloudfoundry.com")) {
+			return DEFAULT_CONTROLLER_URL;
+		}
+		Matcher matcher = CONTROLLER_PATTERN.matcher(uri);
+		if (matcher.matches()) {
+			return matcher.group(1) + "api." + matcher.group(2);
+		}
+
+		return DEFAULT_CONTROLLER_URL;
 	}
 
 	@SuppressWarnings("unchecked")
