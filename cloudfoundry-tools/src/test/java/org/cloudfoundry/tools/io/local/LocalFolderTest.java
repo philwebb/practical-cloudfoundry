@@ -60,7 +60,7 @@ public class LocalFolderTest {
 
 	@Test
 	public void shouldFind() throws Exception {
-		List<Resource> all = this.root.find().fetchAll();
+		List<Resource> all = this.root.find().asList();
 		Set<String> actual = getNames(all);
 		Set<String> expected = new HashSet<String>();
 		expected.add("/a/");
@@ -75,7 +75,7 @@ public class LocalFolderTest {
 
 	@Test
 	public void shouldFindSingle() throws Exception {
-		List<Resource> all = this.root.getFolder("a/b").find().fetchAll();
+		List<Resource> all = this.root.getFolder("a/b").find().asList();
 		Set<String> actual = getNames(all);
 		Set<String> expected = new HashSet<String>();
 		expected.add("/a/b/c.txt");
@@ -84,7 +84,7 @@ public class LocalFolderTest {
 
 	@Test
 	public void shouldFindFiles() throws Exception {
-		List<File> all = this.root.find().files().fetchAll();
+		List<File> all = this.root.find().files().asList();
 		Set<String> actual = getNames(all);
 		Set<String> expected = new HashSet<String>();
 		expected.add("/a/b/c.txt");
@@ -97,8 +97,8 @@ public class LocalFolderTest {
 	public void shouldFindFilesTwice() throws Exception {
 		// WM-4280
 		Resources<File> files = this.root.find().files();
-		List<File> all1 = files.fetchAll();
-		List<File> all2 = files.fetchAll();
+		List<File> all1 = files.asList();
+		List<File> all2 = files.asList();
 		assertThat(all1.size(), is(all2.size()));
 	}
 

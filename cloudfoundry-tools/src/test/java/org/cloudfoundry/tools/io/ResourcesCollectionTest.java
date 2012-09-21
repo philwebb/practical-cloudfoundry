@@ -138,7 +138,7 @@ public class ResourcesCollectionTest {
 	public void shouldFetchAll() throws Exception {
 		ResourcesCollection<Resource> collection = new ResourcesCollection<Resource>(this.source, this.folder,
 				this.file);
-		List<Resource> list = collection.fetchAll();
+		List<Resource> list = collection.asList();
 		assertThat(list.size(), is(2));
 		assertThat(list.get(0), is((Resource) this.folder));
 		assertThat(list.get(1), is((Resource) this.file));

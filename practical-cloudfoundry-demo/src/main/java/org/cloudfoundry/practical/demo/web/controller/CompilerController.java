@@ -20,14 +20,16 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
@@ -37,9 +39,14 @@ import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
 import org.apache.commons.io.output.WriterOutputStream;
+import org.cloudfoundry.tools.io.File;
+import org.cloudfoundry.tools.io.FilterOn;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.ResourceURL;
+import org.cloudfoundry.tools.io.Resources;
 import org.cloudfoundry.tools.io.compiler.ResourceJavaFileManager;
+import org.cloudfoundry.tools.io.local.LocalFile;
+import org.cloudfoundry.tools.io.local.LocalFolder;
 import org.cloudfoundry.tools.io.virtual.VirtualFolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -82,7 +89,7 @@ public class CompilerController {
 	@ResponseBody
 	public String compile(@RequestParam String input) throws Exception {
 		StringWriter out = new StringWriter();
-		Folders folders = new Folders();
+		Folders folders = new Folders(this.folder.getFolder("lib"));
 		folders.getSource().getFile("Main.java").getContent().write(input);
 		if (compile(folders, out)) {
 			run(folders, out);
@@ -95,6 +102,7 @@ public class CompilerController {
 		ResourceJavaFileManager fileManager = new ResourceJavaFileManager(standardFileManager);
 		fileManager.setLocation(StandardLocation.SOURCE_PATH, folders.getSource());
 		fileManager.setLocation(StandardLocation.CLASS_OUTPUT, folders.getOutput());
+		fileManager.setLocation(StandardLocation.CLASS_PATH, folders.getLibJars());
 		Iterable<? extends JavaFileObject> units = fileManager.list(StandardLocation.SOURCE_PATH, "",
 				EnumSet.of(Kind.SOURCE), true);
 		CompilationTask task = this.compiler.getTask(out, fileManager, null, COMPILER_OPTIONS, null, units);
@@ -102,28 +110,45 @@ public class CompilerController {
 	}
 
 	private void run(final Folders folders, final Writer out) throws Exception {
-		runWithOutputOverride(new WriterOutputStream(out), new Callable<Object>() {
-			@Override
-			public Object call() throws Exception {
-				URL url = ResourceURL.get(folders.getOutput(), true);
-				URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { url });
-				Class<?> main = Class.forName("Main", true, classLoader);
-				Method method = main.getDeclaredMethod("main", String[].class);
-				method.invoke(null, new Object[] { new String[] {} });
-				return null;
-			}
-		});
-	}
-
-	private <T> T runWithOutputOverride(OutputStream outputStream, Callable<T> callable) throws Exception {
+		OutputStream outputStream = new WriterOutputStream(out);
 		outOverride.setOutputStream(outputStream);
 		errOverride.setOutputStream(outputStream);
 		try {
-			return callable.call();
+			runWithRedirectedOutput(folders);
 		} finally {
 			outOverride.setOutputStream(null);
 			errOverride.setOutputStream(null);
 		}
+
+	}
+
+	private void runWithRedirectedOutput(final Folders folders) throws MalformedURLException, ClassNotFoundException,
+			NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		LocalFolder temporaryLibFolder = LocalFolder.createTempFolder("pcf");
+		try {
+			URLClassLoader classLoader = createClassLoader(folders, temporaryLibFolder);
+			invokeMain(classLoader);
+		} finally {
+			temporaryLibFolder.delete();
+		}
+	}
+
+	private URLClassLoader createClassLoader(final Folders folders, LocalFolder temporaryLibFolder)
+			throws MalformedURLException {
+		List<URL> urls = new ArrayList<URL>();
+		urls.add(ResourceURL.get(folders.getOutput(), true));
+		folders.getLibJars().copyTo(temporaryLibFolder);
+		for (File file : temporaryLibFolder.list().files().asList()) {
+			urls.add(((LocalFile) file).getLocalFile().toURI().toURL());
+		}
+		return URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]));
+	}
+
+	private void invokeMain(URLClassLoader classLoader) throws ClassNotFoundException, NoSuchMethodException,
+			IllegalAccessException, InvocationTargetException {
+		Class<?> main = Class.forName("Main", true, classLoader);
+		Method method = main.getDeclaredMethod("main", String[].class);
+		method.invoke(null, new Object[] { new String[] {} });
 	}
 
 	@Autowired
@@ -143,6 +168,11 @@ public class CompilerController {
 
 		private Folder source = new VirtualFolder();
 		private Folder output = new VirtualFolder();
+		private Folder lib;
+
+		public Folders(Folder lib) {
+			this.lib = lib;
+		}
 
 		public Folder getSource() {
 			return this.source;
@@ -150,6 +180,11 @@ public class CompilerController {
 
 		public Folder getOutput() {
 			return this.output;
+		}
+
+		public Resources<File> getLibJars() {
+			System.out.println(this.lib.list().include(FilterOn.names().ending(".jar")).files().asList());
+			return this.lib.list().include(FilterOn.names().ending(".jar")).files();
 		}
 	}
 

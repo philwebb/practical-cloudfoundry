@@ -16,9 +16,11 @@
 package org.cloudfoundry.tools.io.local;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.JailedResourcePath;
+import org.cloudfoundry.tools.io.exception.ResourceException;
 import org.cloudfoundry.tools.io.local.LocalResourceStore.LocalFolderStore;
 import org.cloudfoundry.tools.io.store.FolderStore;
 import org.cloudfoundry.tools.io.store.StoredFolder;
@@ -83,5 +85,34 @@ public class LocalFolder extends StoredFolder {
 		String home = System.getProperty("user.home");
 		Assert.state(StringUtils.hasLength(home), "Unable to locate home folder");
 		return new LocalFolder(home);
+	}
+
+	/**
+	 * Create a temporary folder.
+	 * @param prefix the folder prefix
+	 * @return a new temporary folder
+	 */
+	public static LocalFolder createTempFolder(String prefix) {
+		return createTempFolder(prefix, null);
+	}
+
+	/**
+	 * Create a temporary folder.
+	 * @param prefix the folder prefix
+	 * @param suffix the folder suffix
+	 * @return a new temporary folder
+	 */
+	public static LocalFolder createTempFolder(String prefix, String suffix) {
+		LocalFolder tempFolder;
+		try {
+			File tempFile = File.createTempFile(prefix, suffix);
+			tempFile.delete();
+			tempFile.mkdir();
+			tempFolder = new LocalFolder(tempFile);
+			tempFolder.createIfMissing();
+			return tempFolder;
+		} catch (IOException e) {
+			throw new ResourceException(e);
+		}
 	}
 }

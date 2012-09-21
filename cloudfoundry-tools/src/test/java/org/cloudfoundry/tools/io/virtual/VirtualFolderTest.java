@@ -47,7 +47,7 @@ public class VirtualFolderTest {
 	public void shouldCreateNew() throws Exception {
 		assertThat(this.folder.toString(), is("/"));
 		assertThat(this.folder.exists(), is(false));
-		assertThat(this.folder.list().fetchAll().size(), is(0));
+		assertThat(this.folder.list().asList().size(), is(0));
 	}
 
 	@Test

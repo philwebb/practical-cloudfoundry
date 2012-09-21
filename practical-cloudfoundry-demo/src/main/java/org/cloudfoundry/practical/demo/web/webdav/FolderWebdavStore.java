@@ -89,7 +89,7 @@ public class FolderWebdavStore implements IWebdavStore {
 
 	@Override
 	public String[] getChildrenNames(ITransaction transaction, String folderUri) {
-		List<Resource> childResources = this.root.getFolder(folderUri).list().fetchAll();
+		List<Resource> childResources = this.root.getFolder(folderUri).list().asList();
 		String[] children = new String[childResources.size()];
 		for (int i = 0; i < children.length; i++) {
 			children[i] = childResources.get(i).getName();

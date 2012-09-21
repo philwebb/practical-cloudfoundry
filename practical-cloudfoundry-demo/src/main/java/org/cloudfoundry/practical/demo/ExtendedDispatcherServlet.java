@@ -32,6 +32,10 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 public class ExtendedDispatcherServlet extends DispatcherServlet {
 
+	public ExtendedDispatcherServlet() {
+		super();
+	}
+
 	public ExtendedDispatcherServlet(WebApplicationContext context) {
 		super(context);
 	}

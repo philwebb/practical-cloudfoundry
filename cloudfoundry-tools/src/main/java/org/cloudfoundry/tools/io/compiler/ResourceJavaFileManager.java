@@ -38,6 +38,7 @@ import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.Resource;
 import org.cloudfoundry.tools.io.ResourcePath;
 import org.cloudfoundry.tools.io.ResourceURL;
+import org.cloudfoundry.tools.io.Resources;
 import org.cloudfoundry.tools.io.zip.ZipArchive;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -236,6 +237,21 @@ public class ResourceJavaFileManager extends ForwardingJavaFileManager<JavaFileM
 		return this.locations.get(location.getName());
 	}
 
+	/**
+	 * Set the specified location using the given resources.
+	 * @param location the location to set
+	 * @param resources the resources
+	 */
+	public void setLocation(Location location, Resources<?> resources) {
+		List<?> list = resources.asList();
+		setLocation(location, list.toArray(new Resource[list.size()]));
+	}
+
+	/**
+	 * Set the specified location using the given resources.
+	 * @param location the location to set
+	 * @param resources the resources
+	 */
 	public void setLocation(Location location, Resource... resources) {
 		Assert.notNull(location, "Location must not be null");
 
