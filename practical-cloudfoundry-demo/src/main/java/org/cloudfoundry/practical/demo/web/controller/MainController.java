@@ -15,11 +15,13 @@
  */
 package org.cloudfoundry.practical.demo.web.controller;
 
-import org.cloudfoundry.practical.demo.core.About;
+import java.util.Collections;
+
+import org.cloudfoundry.practical.demo.core.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * MVC controller showing an about information.
@@ -27,18 +29,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author Phillip Webb
  */
 @Controller
-public class AboutController {
+public class MainController {
 
-	private About about;
+	private UserDetails userDetails;
 
-	@RequestMapping("/about")
-	@ResponseBody
-	public String showAboutMessage() {
-		return this.about.getAbout();
+	@RequestMapping({ "/", "/index.html" })
+	public ModelAndView index() {
+		return new ModelAndView("index", Collections.singletonMap("username", this.userDetails.getUsername()));
 	}
 
 	@Autowired
-	public void setAbout(About demo) {
-		this.about = demo;
+	public void setUserDetails(UserDetails userDetails) {
+		this.userDetails = userDetails;
 	}
+
 }

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cloudfoundry.client.lib.CloudFoundryClient;
+import org.cloudfoundry.tools.env.CloudEnvironment;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -54,6 +55,13 @@ public class CloudFoundryAuthenticationProviderTest {
 
 	@Mock
 	private CloudFoundryClient cloudFoundryClient;
+
+	private CloudEnvironment cloudEnvironment = new CloudEnvironment() {
+		@Override
+		public String getValue(String key) {
+			return CloudFoundryAuthenticationProviderTest.this.environment.get(key);
+		};
+	};
 
 	@Before
 	public void setup() {
@@ -135,14 +143,14 @@ public class CloudFoundryAuthenticationProviderTest {
 	private class TestableCloudFoundryAuthenticationProvider extends CloudFoundryAuthenticationProvider {
 
 		@Override
-		protected CloudFoundryClient getCloudFoundryClient(String username, String password, String cloudControllerUrl) {
-			return CloudFoundryAuthenticationProviderTest.this.cloudFoundryClientFactory.getCloudFoundryClient(
-					username, password, cloudControllerUrl);
+		protected CloudEnvironment cloudEnvironment() {
+			return CloudFoundryAuthenticationProviderTest.this.cloudEnvironment;
 		}
 
 		@Override
-		protected String getValue(String name) {
-			return CloudFoundryAuthenticationProviderTest.this.environment.get(name);
+		protected CloudFoundryClient getCloudFoundryClient(String username, String password, String cloudControllerUrl) {
+			return CloudFoundryAuthenticationProviderTest.this.cloudFoundryClientFactory.getCloudFoundryClient(
+					username, password, cloudControllerUrl);
 		}
 	}
 

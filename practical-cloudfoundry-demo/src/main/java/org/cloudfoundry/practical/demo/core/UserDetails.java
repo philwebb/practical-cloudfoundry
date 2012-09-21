@@ -16,15 +16,12 @@
 package org.cloudfoundry.practical.demo.core;
 
 /**
- * A simple demo interface showing how different implementations can be injected.
+ * Provides details of the current user.
  * 
  * @author Phillip Webb
  */
-public interface About {
+public interface UserDetails {
 
-	/**
-	 * @return a simple about message
-	 */
-	String getAbout();
+	String getUsername();
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tl="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>Timeouts</title>
+		<title th:text="'Timeouts (' + ${name} + ')'"/>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<script type="text/javascript" th:src="@{/dojo/dojo.js.uncompressed.js}"/>
 		<script type="text/javascript" th:src="@{/cloudfoundry/dojo-xhr-timeout-shim.js}" th:if="${useshim}"/>
@@ -47,13 +47,13 @@
 			    );
 			}
 		</script>
-	<h1>Timeouts</h1>
-	<div>
-		<input id="go" type="button" value="Go" th:onclick="'ajaxButtonClick(\&apos;' + ${ajaxcall} + '\&apos;)'"/>
-		<span id="counter"/>
-	</div>
-	<div>
-		<textarea id="text" rows="10" cols="80"/>
-	</div>
-</body>
+		<h1 th:text="'Timeouts (' + ${name} + ')'"/>
+		<div>
+			<input id="go" type="button" value="Go" th:onclick="'ajaxButtonClick(\&apos;' + ${ajaxcall} + '\&apos;)'"/>
+			<span id="counter"/>
+		</div>
+		<div>
+			<textarea id="text" rows="10" cols="80"/>
+		</div>
+	</body>
 </html>

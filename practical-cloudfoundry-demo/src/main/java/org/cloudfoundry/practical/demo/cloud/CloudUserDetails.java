@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cloudfoundry.practical.demo.local;
+package org.cloudfoundry.practical.demo.cloud;
 
-import org.cloudfoundry.practical.demo.core.About;
+import org.cloudfoundry.practical.demo.core.UserDetails;
+import org.cloudfoundry.tools.env.CloudEnvironment;
 import org.springframework.stereotype.Component;
 
 /**
- * Implementation of {@link About} for the local environment.
+ * Implementation of {@link UserDetails} for the cloud environment.
  * 
  * @author Phillip Webb
  */
 @Component
-public class LocalAbout implements About {
+public class CloudUserDetails implements UserDetails {
 
-	public String getAbout() {
-		return "Welcome to practical cloudfoundry.  Looks like we are running locally";
+	@Override
+	public String getUsername() {
+		return CloudEnvironment.current().getUser();
 	}
 
 }

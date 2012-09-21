@@ -44,6 +44,7 @@ public class TimeoutController {
 	@RequestMapping("/timeout/default")
 	public ModelAndView timeoutDefault() {
 		ModelAndView modelAndView = new ModelAndView("timeout");
+		modelAndView.addObject("name", "Default");
 		modelAndView.addObject("useshim", false);
 		modelAndView.addObject("ajaxcall", "ajaxrequest");
 		return modelAndView;
@@ -52,6 +53,7 @@ public class TimeoutController {
 	@RequestMapping("/timeout/drip")
 	public ModelAndView timeouDrip() {
 		ModelAndView modelAndView = new ModelAndView("timeout");
+		modelAndView.addObject("name", "Drip");
 		modelAndView.addObject("useshim", false);
 		modelAndView.addObject("ajaxcall", "ajaxdrip");
 		return modelAndView;
@@ -60,6 +62,7 @@ public class TimeoutController {
 	@RequestMapping("/timeout/shim")
 	public ModelAndView timeoutShim() {
 		ModelAndView modelAndView = new ModelAndView("timeout");
+		modelAndView.addObject("name", "Shim");
 		modelAndView.addObject("useshim", true);
 		modelAndView.addObject("ajaxcall", "ajaxrequest");
 		return modelAndView;

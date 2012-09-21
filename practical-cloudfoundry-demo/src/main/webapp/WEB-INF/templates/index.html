@@ -1,0 +1,18 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Compiler</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+	<body>
+		<h1>Practical Cloud Foundry</h1>
+		<p th:text="'Welcome ' + ${username} + ', we hope you enjoy the demo!'"/>
+		<ul>
+			<li><a th:href="@{/dav}">FileSystem Demo</a></li>
+			<li><a th:href="@{/timeout/default}">Timeouts Demo (Default)</a></li>
+			<li><a th:href="@{/timeout/drip}">Timeouts Demo (Drip)</a></li>
+			<li><a th:href="@{/timeout/shim}">Timeouts Demo (Shim)</a></li>
+			<li><a th:href="@{/compiler}">Compiler Demo</a></li>
+		</ul>
+	</body>
+</html>

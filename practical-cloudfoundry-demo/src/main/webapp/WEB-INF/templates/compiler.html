@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tl="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Compiler</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -17,21 +17,21 @@
 				});
 			}
 		</script>
-	<h1>Compiler</h1>
-	<div>
-		<input id="compile" type="button" value="Compile" onclick="compile()"/>
-	</div>
-	<div>
-		<form id="inputform" action="">
-			<textarea name="input" rows="10" cols="80">
+		<h1>Compiler</h1>
+		<div>
+			<input id="compile" type="button" value="Compile" onclick="compile()"/>
+		</div>
+		<div>
+			<form id="inputform" action="">
+				<textarea name="input" rows="10" cols="80">
 public class Main {
 	public static void main(String[] args) {
 		System.out.println("Hello Cloudfoundry World");
 	}
 }
-			</textarea>
-		</form>
-		<textarea id="output" rows="10" cols="80"/>
-	</div>
-</body>
+				</textarea>
+			</form>
+			<textarea id="output" rows="10" cols="80"/>
+		</div>
+	</body>
 </html>
