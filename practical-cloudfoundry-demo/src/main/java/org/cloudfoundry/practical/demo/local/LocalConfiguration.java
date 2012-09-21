@@ -16,8 +16,8 @@
 package org.cloudfoundry.practical.demo.local;
 
 import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
+import org.cloudfoundry.tools.compiler.CloudFoundryJavaCompiler;
 import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.local.LocalFolder;
 import org.springframework.context.annotation.Bean;
@@ -37,13 +37,14 @@ public class LocalConfiguration {
 
 	@Bean
 	public Folder folder() {
-		Folder folder = LocalFolder.home().getFolder("practical-cloudfoundry");
+		Folder folder = LocalFolder.home().getFolder("practical-cloudfoundry").jail();
 		folder.createIfMissing();
 		return folder;
 	}
 
 	@Bean
 	JavaCompiler javaCompiler() {
-		return ToolProvider.getSystemJavaCompiler();
+		return new CloudFoundryJavaCompiler();
+		// FIXME return ToolProvider.getSystemJavaCompiler();
 	}
 }

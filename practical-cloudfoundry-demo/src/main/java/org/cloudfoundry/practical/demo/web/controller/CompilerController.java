@@ -183,7 +183,6 @@ public class CompilerController {
 		}
 
 		public Resources<File> getLibJars() {
-			System.out.println(this.lib.list().include(FilterOn.names().ending(".jar")).files().asList());
 			return this.lib.list().include(FilterOn.names().ending(".jar")).files();
 		}
 	}

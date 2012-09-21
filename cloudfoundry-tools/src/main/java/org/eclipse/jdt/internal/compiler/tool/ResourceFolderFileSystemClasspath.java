@@ -106,7 +106,8 @@ public class ResourceFolderFileSystemClasspath implements Classpath {
 			try {
 				ClassFileReader reader = ClassFileReader.read(file.getContent().asInputStream(),
 						qualifiedBinaryFileName);
-				String typeSearched = normalizePath(qualifiedPackageName) + "/" + filename;
+				String typeSearched = qualifiedPackageName.isEmpty() ? filename : normalizePath(qualifiedPackageName)
+						+ "/" + filename;
 				if (!CharOperation.equals(reader.getName(), typeSearched.toCharArray())) {
 					reader = null;
 				}
@@ -133,7 +134,7 @@ public class ResourceFolderFileSystemClasspath implements Classpath {
 		Boolean isPackage = this.isPackageCache.get(qualifiedPackageName);
 		if (isPackage == null) {
 			String packagePath = normalizePath(qualifiedPackageName);
-			isPackage = StringUtils.hasLength(packagePath) && this.folder.hasExisting(packagePath);
+			isPackage = !StringUtils.hasLength(packagePath) || this.folder.hasExisting(packagePath);
 			this.isPackageCache.put(qualifiedPackageName, isPackage);
 		}
 		return isPackage;
