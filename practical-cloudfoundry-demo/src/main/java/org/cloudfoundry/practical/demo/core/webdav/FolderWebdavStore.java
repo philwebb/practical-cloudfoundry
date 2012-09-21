@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.cloudfoundry.practical.demo.web.webdav;
+package org.cloudfoundry.practical.demo.core.webdav;
 
 import java.io.InputStream;
 import java.security.Principal;
