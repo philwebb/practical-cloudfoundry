@@ -45,8 +45,7 @@ public class RootConfiguration {
 
 	@Bean
 	public TimeoutProtectionStrategy timeoutProtectionStrategy() {
-		ReplayingTimeoutProtectionStrategy strategy = new ReplayingTimeoutProtectionStrategy();
-		return strategy;
+		return new ReplayingTimeoutProtectionStrategy();
 	}
 
 }
