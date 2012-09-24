@@ -131,6 +131,8 @@ public class CloudFoundryAuthenticationProviderTest {
 	private void setupEnvironment(String user) {
 		StringBuilder vcap = new StringBuilder();
 		vcap.append("{");
+		vcap.append("\"instance_index\":1,");
+		vcap.append("\"port\":123,");
 		vcap.append("\"users\":[\"" + user + "\"]");
 		vcap.append("}");
 		this.environment.put("VCAP_APPLICATION", vcap.toString());
