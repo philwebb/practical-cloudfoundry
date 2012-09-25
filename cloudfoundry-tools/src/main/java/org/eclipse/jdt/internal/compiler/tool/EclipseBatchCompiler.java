@@ -34,7 +34,7 @@ import org.eclipse.jdt.internal.compiler.batch.FileSystem;
 
 /**
  * Exposes a variant of the internal eclipse batch compiler for use by the {@link CloudFoundryJavaCompiler}. This is an
- * internal WaveMaker class and should not be used directly.
+ * internal class and should not be used directly.
  * <p>
  * Can compile classes not contained on the filesystem and support {@link ResourceJavaFileManager}s.
  * 
