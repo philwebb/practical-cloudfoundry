@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.cloudfoundry.tools.io.exception.ResourceTypeMismatchException;
+import org.cloudfoundry.tools.io.zip.ZipArchive;
+import org.springframework.util.ObjectUtils;
 
 /**
  * Factory class that can be used to construct a {@link URL} for a given {@link Resource}. The {@link URL}s returned
@@ -37,6 +39,8 @@ import org.cloudfoundry.tools.io.exception.ResourceTypeMismatchException;
  * @author Phillip Webb
  */
 public abstract class ResourceURL {
+
+	private static final ResourceFilter ZIPPED_RESOURCES = FilterOn.names().ending(".jar", ".zip");
 
 	public static final String PROTOCOL = "rfs";
 
@@ -60,9 +64,13 @@ public abstract class ResourceURL {
 	 * @throws MalformedURLException
 	 */
 	public static URL get(Resource resource, boolean nonLocking) throws MalformedURLException {
-		String spec = getSpec(resource);
+		// zipped resource cannot be handled by URLClassLoader, make it look like a folder
+		if (resource instanceof File && ZIPPED_RESOURCES.match(null, resource)) {
+			resource = new ZipArchive((File) resource);
+		}
 		ResourceURLStreamHandler handler = new ResourceURLStreamHandler(resource, nonLocking);
-		return new URL(null, spec, handler);
+		return new URL(PROTOCOL, resource.getClass().getName() + "@" + ObjectUtils.getIdentityHexString(resource), 0,
+				resource.toString(), handler);
 	}
 
 	/**
@@ -91,10 +99,6 @@ public abstract class ResourceURL {
 			urls.add(get(resource, nonLocking));
 		}
 		return Collections.unmodifiableList(urls);
-	}
-
-	private static String getSpec(Resource resource) {
-		return PROTOCOL + ":" + resource.toString();
 	}
 
 	/**

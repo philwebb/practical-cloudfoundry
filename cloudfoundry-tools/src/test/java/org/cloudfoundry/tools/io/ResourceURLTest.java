@@ -15,8 +15,10 @@
  */
 package org.cloudfoundry.tools.io;
 
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
@@ -58,20 +60,23 @@ public class ResourceURLTest {
 	@Test
 	public void shouldGetFileURL() throws Exception {
 		URL url = ResourceURL.get(this.root.getFile("/jail/a/b/c.txt"));
-		assertThat(url.toString(), is(equalTo("rfs:/jail/a/b/c.txt")));
+		assertThat(url.toString(), startsWith("rfs:"));
+		assertThat(url.toString(), endsWith("/jail/a/b/c.txt"));
 	}
 
 	@Test
 	public void shouldGetFolderURL() throws Exception {
 		URL url = ResourceURL.get(this.root.getFolder("/jail/a/b"));
-		assertThat(url.toString(), is(equalTo("rfs:/jail/a/b/")));
+		assertThat(url.toString(), startsWith("rfs:"));
+		assertThat(url.toString(), endsWith("/jail/a/b/"));
 	}
 
 	@Test
 	public void shouldGetJailedURL() throws Exception {
 		Folder jail = this.root.getFolder("jail").jail();
 		URL url = ResourceURL.get(jail.getFile("/a/b/c.txt"));
-		assertThat(url.toString(), is(equalTo("rfs:/a/b/c.txt")));
+		assertThat(url.toString(), startsWith("rfs:"));
+		assertThat(url.toString(), endsWith("/a/b/c.txt"));
 	}
 
 	@Test
@@ -92,7 +97,8 @@ public class ResourceURLTest {
 		Folder jail = this.root.getFolder("jail").jail();
 		URL ab = ResourceURL.get(jail.getFolder("a/b"));
 		URL url = new URL(ab, "c.txt");
-		assertThat(url.toString(), is(equalTo("rfs:/a/b/c.txt")));
+		assertThat(url.toString(), startsWith("rfs:"));
+		assertThat(url.toString(), endsWith("/a/b/c.txt"));
 		assertThat(IOUtils.toString(url.openStream()), is(equalTo("c")));
 	}
 
@@ -101,7 +107,8 @@ public class ResourceURLTest {
 		Folder jail = this.root.getFolder("jail").jail();
 		URL ab = ResourceURL.get(jail.getFolder("a/b"));
 		URL url = new URL(ab, "/x/y/z.txt");
-		assertThat(url.toString(), is(equalTo("rfs:/x/y/z.txt")));
+		assertThat(url.toString(), startsWith("rfs:"));
+		assertThat(url.toString(), endsWith("/x/y/z.txt"));
 		assertThat(IOUtils.toString(url.openStream()), is(equalTo("z")));
 	}
 
@@ -110,7 +117,8 @@ public class ResourceURLTest {
 		Folder jail = this.root.getFolder("jail").jail();
 		URL abc = ResourceURL.get(jail.getFile("a/b/c.txt"));
 		URL url = new URL(abc, "/x/y/z.txt");
-		assertThat(url.toString(), is(equalTo("rfs:/x/y/z.txt")));
+		assertThat(url.toString(), startsWith("rfs:"));
+		assertThat(url.toString(), endsWith("/x/y/z.txt"));
 		assertThat(IOUtils.toString(url.openStream()), is(equalTo("z")));
 	}
 
@@ -135,7 +143,8 @@ public class ResourceURLTest {
 		Folder jail = this.root.getFolder("jail").jail();
 		URLClassLoader classLoader = new URLClassLoader(new URL[] { ResourceURL.get(jail) });
 		assertThat(IOUtils.toString(classLoader.getResourceAsStream("/a/b/c.txt")), is(equalTo("c")));
-		assertThat(classLoader.getResource("/x/y/z.txt").toString(), is(equalTo("rfs:/x/y/z.txt")));
+		assertThat(classLoader.getResource("/x/y/z.txt").toString(), startsWith("rfs:"));
+		assertThat(classLoader.getResource("/x/y/z.txt").toString(), endsWith("/x/y/z.txt"));
 	}
 
 	@Test
@@ -145,7 +154,16 @@ public class ResourceURLTest {
 		folders.add(this.root.getFolder("/jail/a/b"));
 		List<URL> url = ResourceURL.getForResources(folders);
 		assertThat(url.size(), is(2));
-		assertThat(url.get(0).toString(), is(equalTo("rfs:/jail/a/")));
-		assertThat(url.get(1).toString(), is(equalTo("rfs:/jail/a/b/")));
+		assertThat(url.get(0).toString(), startsWith("rfs:"));
+		assertThat(url.get(0).toString(), endsWith("/jail/a/"));
+		assertThat(url.get(1).toString(), startsWith("rfs:"));
+		assertThat(url.get(1).toString(), endsWith("/jail/a/b/"));
 	}
+
+	@Test
+	public void shouldGetFileFromURL() throws Exception {
+		URL url = ResourceURL.get(this.root.getFolder("/jail/a/b"));
+		assertThat(url.getFile(), is(equalTo("/jail/a/b/")));
+	}
+
 }
