@@ -45,8 +45,6 @@ import org.cloudfoundry.tools.io.Folder;
 import org.cloudfoundry.tools.io.ResourceURL;
 import org.cloudfoundry.tools.io.Resources;
 import org.cloudfoundry.tools.io.compiler.ResourceJavaFileManager;
-import org.cloudfoundry.tools.io.local.LocalFile;
-import org.cloudfoundry.tools.io.local.LocalFolder;
 import org.cloudfoundry.tools.io.virtual.VirtualFolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -124,24 +122,11 @@ public class CompilerController {
 
 	private void runWithRedirectedOutput(final Folders folders) throws MalformedURLException, ClassNotFoundException,
 			NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		LocalFolder temporaryLibFolder = LocalFolder.createTempFolder("pcf");
-		try {
-			URLClassLoader classLoader = createClassLoader(folders, temporaryLibFolder);
-			invokeMain(classLoader);
-		} finally {
-			temporaryLibFolder.delete();
-		}
-	}
-
-	private URLClassLoader createClassLoader(final Folders folders, LocalFolder temporaryLibFolder)
-			throws MalformedURLException {
 		List<URL> urls = new ArrayList<URL>();
-		urls.add(ResourceURL.get(folders.getOutput(), true));
-		folders.getLibJars().copyTo(temporaryLibFolder);
-		for (File file : temporaryLibFolder.list().files().asList()) {
-			urls.add(((LocalFile) file).getLocalFile().toURI().toURL());
-		}
-		return URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]));
+		urls.add(ResourceURL.get(folders.getOutput()));
+		urls.addAll(ResourceURL.getForResources(folders.getLibJars()));
+		URLClassLoader classLoader = URLClassLoader.newInstance(urls.toArray(new URL[urls.size()]));
+		invokeMain(classLoader);
 	}
 
 	private void invokeMain(URLClassLoader classLoader) throws ClassNotFoundException, NoSuchMethodException,
