@@ -40,9 +40,6 @@
 								<copy todir="${dest}">
 									<fileset dir="${project.basedir}/src/modifications" />
 								</copy>
-								<copy
-									file="${org.cloudfoundry.practical:cloudfoundry-debug-tunnel:war}"
-									tofile="${dest}/webapps/cloudfoundry-debug-tunnel.war" />
 								<tar destfile="${project.build.directory}/tomcat.tar.gz"
 									compression="gzip">
 									<tarfileset dir="${dest}">
@@ -61,12 +58,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>cloudfoundry-debug-tunnel</artifactId>
-			<version>${project.version}</version>
-			<type>war</type>
-		</dependency>
-	</dependencies>
 </project>
