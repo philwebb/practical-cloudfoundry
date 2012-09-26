@@ -124,13 +124,15 @@ done
 PRGDIR=`dirname "$PRG"`
 
 # Cloud Foundry Specifics
-DEBUG_PORT=`ruby $PRGDIR/grabephemeralport.rb`
 if [ -z ${VCAP_APP_PORT} ]; then
   export VCAP_APP_PORT=8080
 fi
 JAVA_OPTS="$JAVA_OPTS -Dport.http.nonssl=$VCAP_APP_PORT"
-JAVA_OPTS="$JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=$DEBUG_PORT -Dcloudfoundry.debug.port=$DEBUG_PORT"
-echo "Using debug port $DEBUG_PORT"
+if [ `echo "$TUNNEL_DEBUG" | tr "[:upper:]" "[:lower:]"` = "true" ]; then
+	DEBUG_PORT=`ruby $PRGDIR/grabephemeralport.rb`
+	JAVA_OPTS="$JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=$DEBUG_PORT -Dcloudfoundry.debug.port=$DEBUG_PORT"
+	echo "Using debug port $DEBUG_PORT"
+fi
 
 # Only set CATALINA_HOME if not already set
 [ -z "$CATALINA_HOME" ] && CATALINA_HOME=`cd "$PRGDIR/.." >/dev/null; pwd`
