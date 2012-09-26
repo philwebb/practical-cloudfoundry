@@ -1,1 +1,0 @@
-Modified version of https://github.com/cloudfoundry/vmc.git that supports java remote debug tunnel
