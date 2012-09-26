@@ -27,7 +27,7 @@
 						<inherited>false</inherited>
 						<configuration>
 							<target>
-								<property name="dest" value="${build.directory}/tomcat" />
+								<property name="dest" value="${project.build.directory}/tomcat" />
 								<property name="tomcat" value="apache-tomcat-${tomcat-version}" />
 								<echo message="${dest}" />
 								<untar src="${project.basedir}/src/${tomcat}.tar.gz" dest="${dest}"
@@ -43,7 +43,7 @@
 								<copy
 									file="${org.cloudfoundry.practical:cloudfoundry-debug-tunnel:war}"
 									tofile="${dest}/webapps/cloudfoundry-debug-tunnel.war" />
-								<tar destfile="${build.directory}/tomcat.tar.gz"
+								<tar destfile="${project.build.directory}/tomcat.tar.gz"
 									compression="gzip">
 									<tarfileset dir="${dest}">
 										<exclude name="bin/*.sh" />
@@ -52,7 +52,7 @@
 										<include name="bin/*.sh" />
 									</tarfileset>
 								</tar>
-								<attachartifact file="${build.directory}/tomcat.tar.gz"
+								<attachartifact file="${project.build.directory}/tomcat.tar.gz"
 									type="tar.gz" />
 							</target>
 						</configuration>
