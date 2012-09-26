@@ -11,6 +11,8 @@
 	</prerequisites>
 	<modules>
 		<module>cloudfoundry-tools</module>
+		<module>cloudfoundry-debug-tunnel</module>
+		<module>cloudfoundry-tomcat-standalone</module>
 		<module>practical-cloudfoundry-demo</module>
 		<module>say-cheers</module>
 	</modules>
@@ -41,6 +43,10 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.7</version>
+				</plugin>
 				<plugin>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.3</version>
