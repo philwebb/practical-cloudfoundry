@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.cloudfoundry.practical</groupId>
+		<artifactId>practical-cloudfoundry</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>cloudfoundry-tools</artifactId>
+	<properties>
+		<main.basedir>${basedir}/..</main.basedir>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<additionalConfig>
+						<file>
+							<name>.settings/org.eclipse.jdt.ui.prefs</name>
+							<location>../eclipse/org.eclipse.jdt.ui.prefs</location>
+						</file>
+						<file>
+							<name>.settings/org.eclipse.jdt.core.prefs</name>
+							<location>../eclipse/org.eclipse.jdt.core.prefs</location>
+						</file>
+					</additionalConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencies>
+		<!-- Compile -->
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>cloudfoundry-runtime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.cloudfoundry</groupId>
+			<artifactId>cloudfoundry-client-lib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt.core.compiler</groupId>
+			<artifactId>ecj</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+
+		<!-- Provided -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Optional -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+</project>
