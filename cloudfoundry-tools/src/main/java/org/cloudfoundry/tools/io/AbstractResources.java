@@ -130,7 +130,4 @@ public abstract class AbstractResources<T extends Resource> implements Resources
 		}
 		return Collections.unmodifiableList(all);
 	}
-
-	// FIXME test source
-	// FIXME test copy / move relative to
 }

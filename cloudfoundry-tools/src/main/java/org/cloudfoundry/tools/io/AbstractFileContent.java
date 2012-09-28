@@ -164,6 +164,4 @@ public abstract class AbstractFileContent implements FileContent {
 
 	@Override
 	public abstract OutputStream asOutputStream();
-
-	// FIXME test encoding methods
 }

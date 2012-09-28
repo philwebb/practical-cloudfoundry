@@ -485,9 +485,4 @@ public class StoredFolderTest {
 		assertThat(sub.toString(), is("/b/"));
 		assertThat(sub.toString(ResourceStringFormat.UNJAILED), is("/a/b/"));
 	}
-
-	// FIXME test find
-
-	// FIXME test find and copy?
-
 }
