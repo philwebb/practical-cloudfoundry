@@ -37,7 +37,7 @@ public class TimeoutController {
 
 	private Log logger = LogFactory.getLog(getClass());
 
-	private static final int TOTAL_SECONDS_DELAY = 70;
+	private static final int TOTAL_SECONDS_DELAY = 30;
 
 	private static final long ONE_SECOND = 1000;
 

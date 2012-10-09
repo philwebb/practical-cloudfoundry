@@ -20,6 +20,7 @@
 			function ajaxButtonClick(requestUrl) {
 
 				dojo.byId("go").disabled = true;
+				clockcounter = 0;
 				timer.start();
 
 				var deferred = dojo.xhrPost({
