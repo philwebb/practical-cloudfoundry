@@ -87,6 +87,9 @@ public class CloudEnvironment extends org.cloudfoundry.runtime.env.CloudEnvironm
 		if (uri.endsWith("cloudfoundry.com")) {
 			return DEFAULT_CONTROLLER_URL;
 		}
+		if (!uri.startsWith("http")) {
+			uri = "http://" + uri;
+		}
 		Matcher matcher = CONTROLLER_PATTERN.matcher(uri);
 		if (matcher.matches()) {
 			return matcher.group(1) + "api." + matcher.group(2);
