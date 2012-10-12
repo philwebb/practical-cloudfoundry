@@ -15,20 +15,17 @@
  */
 package org.cloudfoundry.practical.demo.web;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.cloudfoundry.tools.timeout.TimeoutResourceHttpRequestHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
-import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.thymeleaf.spring3.SpringTemplateEngine;
 import org.thymeleaf.spring3.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
@@ -83,10 +80,7 @@ public class WebConfiguration {
 
 	@Bean
 	public HttpRequestHandler cloudfoundryResourceHandler() {
-		ResourceHttpRequestHandler handler = new ResourceHttpRequestHandler();
-		Resource location = new ClassPathResource("/cloudfoundry/");
-		handler.setLocations(Collections.singletonList(location));
-		return handler;
+		return new TimeoutResourceHttpRequestHandler();
 	}
 
 	@Bean

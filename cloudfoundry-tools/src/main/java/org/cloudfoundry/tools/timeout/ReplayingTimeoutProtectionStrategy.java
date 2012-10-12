@@ -43,7 +43,7 @@ import org.springframework.util.Assert;
  * 
  * @author Phillip Webb
  */
-public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStrategy {
+public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStrategy, TimeoutValues {
 
 	private long threshold = TimeUnit.SECONDS.toMillis(14);
 
@@ -113,6 +113,11 @@ public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStra
 		response.setStatus(HttpStatus.NO_CONTENT.value());
 	}
 
+	@Override
+	public long getThreshold() {
+		return this.threshold;
+	}
+
 	/**
 	 * Set the threshold that must be passed before timeout protection will be used
 	 * @param threshold the threshold in milliseconds
@@ -129,9 +134,14 @@ public class ReplayingTimeoutProtectionStrategy implements TimeoutProtectionStra
 		this.longPollTime = longPollTime;
 	}
 
+	@Override
+	public long getFailTimeout() {
+		return this.failTimeout;
+	}
+
 	/**
 	 * Set the amount of time before a request is considered failed.
-	 * @param failTimeout
+	 * @param failTimeout the fail timeout in milliseconds
 	 */
 	public void setFailTimeout(long failTimeout) {
 		this.failTimeout = failTimeout;

@@ -15,6 +15,8 @@
  */
 package org.cloudfoundry.practical.demo;
 
+import java.util.concurrent.TimeUnit;
+
 import org.cloudfoundry.practical.demo.cloud.CloudConfiguration;
 import org.cloudfoundry.practical.demo.core.CoreConfiguration;
 import org.cloudfoundry.practical.demo.local.LocalConfiguration;
@@ -46,8 +48,8 @@ public class RootConfiguration {
 	@Bean
 	public TimeoutProtectionStrategy timeoutProtectionStrategy() {
 		ReplayingTimeoutProtectionStrategy strategy = new ReplayingTimeoutProtectionStrategy();
-		strategy.setThreshold(12);
-		strategy.setFailTimeout(480);
+		strategy.setThreshold(TimeUnit.SECONDS.toMillis(12));
+		strategy.setFailTimeout(TimeUnit.MINUTES.toMillis(4));
 		return strategy;
 	}
 

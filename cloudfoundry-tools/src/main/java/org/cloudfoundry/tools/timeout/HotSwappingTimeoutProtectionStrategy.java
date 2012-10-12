@@ -41,13 +41,13 @@ import org.springframework.util.Assert;
  * 
  * @author Phillip Webb
  */
-public class HotSwappingTimeoutProtectionStrategy implements TimeoutProtectionStrategy {
+public class HotSwappingTimeoutProtectionStrategy implements TimeoutProtectionStrategy, TimeoutValues {
 
 	private long threshold = TimeUnit.SECONDS.toMillis(14);
 
 	private long longPollTime = TimeUnit.SECONDS.toMillis(6);
 
-	private long failTimeout = TimeUnit.SECONDS.toMillis(30);
+	private long failTimeout = TimeUnit.SECONDS.toMillis(120);
 
 	private RequestCoordinators requestCoordinators = new RequestCoordinators();
 
@@ -119,6 +119,11 @@ public class HotSwappingTimeoutProtectionStrategy implements TimeoutProtectionSt
 		this.requestCoordinators = requestCoordinators;
 	}
 
+	@Override
+	public long getThreshold() {
+		return this.threshold;
+	};
+
 	/**
 	 * Set the threshold that must be passed before timeout protection will be used
 	 * @param threshold the threshold in milliseconds
@@ -135,9 +140,14 @@ public class HotSwappingTimeoutProtectionStrategy implements TimeoutProtectionSt
 		this.longPollTime = longPollTime;
 	}
 
+	@Override
+	public long getFailTimeout() {
+		return this.failTimeout;
+	}
+
 	/**
 	 * Set the amount of time before a request is considered failed.
-	 * @param failTimeout
+	 * @param failTimeout the fail timeout in milliseconds
 	 */
 	public void setFailTimeout(long failTimeout) {
 		this.failTimeout = failTimeout;

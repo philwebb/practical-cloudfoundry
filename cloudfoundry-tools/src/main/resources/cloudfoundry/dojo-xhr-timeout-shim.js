@@ -36,7 +36,7 @@
             delete newArgs.error;
             newArgs.handle = handleXhr;
             newArgs.failOk = true;
-            newArgs.timeout = 15000;
+            newArgs.timeout = {polltimeout};
 
             var deferred = new dojo.Deferred();
 
@@ -54,7 +54,7 @@
                     timeout = setTimeout(function() {
                         sendXhrResponse(result, ioargs);
                         timeout = null;
-                    }, 120000);
+                    }, {failtimeout});
                     // Start long polling for response
                     longPollForResult(timeout);
                 } else {
