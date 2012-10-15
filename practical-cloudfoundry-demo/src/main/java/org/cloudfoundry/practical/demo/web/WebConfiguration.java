@@ -37,7 +37,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan
+@ComponentScan(basePackageClasses = WebConfiguration.class)
 public class WebConfiguration {
 
 	private static final String DOJO_ROOT = "dojo-release-1.8.0";

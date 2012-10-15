@@ -35,7 +35,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
  */
 @Configuration
 @Profile("cloud")
-@ComponentScan
+@ComponentScan(basePackageClasses = CloudConfiguration.class)
 public class CloudConfiguration {
 
 	@Autowired

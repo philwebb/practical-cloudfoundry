@@ -32,7 +32,7 @@ import org.springframework.context.annotation.Profile;
  */
 @Configuration
 @Profile("default")
-@ComponentScan
+@ComponentScan(basePackageClasses = LocalConfiguration.class)
 public class LocalConfiguration {
 
 	@Bean

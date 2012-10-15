@@ -24,7 +24,7 @@ import org.springframework.context.annotation.Configuration;
  * @author Phillip Webb
  */
 @Configuration
-@ComponentScan
+@ComponentScan(basePackageClasses = CoreConfiguration.class)
 public class CoreConfiguration {
 
 }
